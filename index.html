@@ -3,138 +3,137 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Center-Focused Valentine Carousel</title>
+<title>Infinite Center Carousel</title>
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
 <style>
-  body {
-    margin: 0;
-    font-family: 'Quicksand', sans-serif;
-    background: linear-gradient(135deg, #ffd1dc, #fff1f3);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+body {
+  margin: 0;
+  font-family: 'Quicksand', sans-serif;
+  background: linear-gradient(135deg, #ffd1dc, #fff1f3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
 
-  h1 {
-    margin-top: 40px;
-    font-family: 'Great Vibes', cursive;
-    font-size: 3rem;
-    color: #d63469;
-    text-align: center;
-    text-shadow: 1px 1px 4px rgba(0,0,0,0.2);
-  }
+h1 {
+  margin-top: 40px;
+  font-family: 'Great Vibes', cursive;
+  font-size: 3rem;
+  color: #d63469;
+  text-align: center;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.2);
+}
 
-  .carousel-container {
-    position: relative;
-    width: 100%;
-    max-width: 600px; /* para mas malaki para sa portrait */
-    margin: 50px 0;
-    overflow: hidden;
-  }
+.carousel-container {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  margin: 50px 0;
+  overflow: hidden;
+}
 
-  .carousel-slide {
-    display: flex;
-    transition: transform 0.5s ease-in-out;
-  }
+.carousel-slide {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
 
-  .carousel-slide .item {
-    width: 200px;
-    height: 300px; /* mas portrait */
-    margin: 0 10px;
-    flex-shrink: 0;
-    border-radius: 16px;
-    overflow: hidden;
-    border: 3px solid #ffc0cb;
-    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
-    transition: all 0.5s ease;
-    transform: scale(0.8);
-    filter: blur(2px);
-    opacity: 0.5;
-  }
+.carousel-slide .item {
+  width: 200px;
+  height: 300px;
+  margin: 0 10px;
+  flex-shrink: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 3px solid #ffc0cb;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+  transition: all 0.5s ease;
+  transform: scale(0.8);
+  filter: blur(2px);
+  opacity: 0.5;
+}
 
-  .carousel-slide .item.center {
-    width: 250px;
-    height: 375px;
-    transform: scale(1);
-    filter: blur(0);
-    border-color: #d63469;
-    opacity: 1;
-    z-index: 2;
-  }
+.carousel-slide .item.center {
+  width: 250px;
+  height: 375px;
+  transform: scale(1);
+  filter: blur(0);
+  border-color: #d63469;
+  opacity: 1;
+  z-index: 2;
+}
 
-  .carousel-slide .item.visible {
-    opacity: 1;
-  }
+.carousel-slide .item.visible {
+  opacity: 1;
+}
 
-  .carousel-slide img,
-  .carousel-slide video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+.carousel-slide img,
+.carousel-slide video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
-  .nav-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(214,52,105,0.7);
-    border: none;
-    color: white;
-    font-size: 2rem;
-    padding: 12px 16px;
-    cursor: pointer;
-    border-radius: 50%;
-    z-index: 3;
-  }
-  .nav-btn:hover { background: rgba(214,52,105,0.9); }
-  #prev { left: 10px; }
-  #next { right: 10px; }
+.nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(214,52,105,0.7);
+  border: none;
+  color: white;
+  font-size: 2rem;
+  padding: 12px 16px;
+  cursor: pointer;
+  border-radius: 50%;
+  z-index: 3;
+}
+.nav-btn:hover { background: rgba(214,52,105,0.9); }
+#prev { left: 10px; }
+#next { right: 10px; }
 
-  .open-letter-btn {
-    margin-top: 30px;
-    background: #ff85a2;
-    color: white;
-    padding: 14px 28px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    transition: background 0.3s;
-  }
-  .open-letter-btn:hover { background: #d63469; }
+.open-letter-btn {
+  margin-top: 30px;
+  background: #ff85a2;
+  color: white;
+  padding: 14px 28px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  transition: background 0.3s;
+}
+.open-letter-btn:hover { background: #d63469; }
 
-  .letter-popup {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    width: 350px;
-    max-width: 90%;
-    background: #fff;
-    border-radius: 16px;
-    box-shadow: 0 12px 24px rgba(0,0,0,0.3);
-    transform: translate(-50%, -50%) scale(0);
-    transition: transform 0.4s ease-in-out;
-    padding: 25px;
-    z-index: 1000;
-    text-align: center;
-  }
-  .letter-popup.open { transform: translate(-50%, -50%) scale(1); }
+.letter-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 350px;
+  max-width: 90%;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 12px 24px rgba(0,0,0,0.3);
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.4s ease-in-out;
+  padding: 25px;
+  z-index: 1000;
+  text-align: center;
+}
+.letter-popup.open { transform: translate(-50%, -50%) scale(1); }
 
-  .close-btn {
-    margin-top: 20px;
-    background: #ff85a2;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-  }
-  .close-btn:hover { background: #d63469; }
-
+.close-btn {
+  margin-top: 20px;
+  background: #ff85a2;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+}
+.close-btn:hover { background: #d63469; }
 </style>
 </head>
 <body>
@@ -143,12 +142,14 @@
 
 <div class="carousel-container">
   <div class="carousel-slide" id="carouselSlide">
+    <div class="item"><img src="https://via.placeholder.com/200x300?text=6"></div> <!-- Clone last -->
     <div class="item"><img src="https://via.placeholder.com/200x300?text=1"></div>
     <div class="item"><img src="https://via.placeholder.com/200x300?text=2"></div>
-    <div class="item center"><video src="https://www.w3schools.com/html/mov_bbb.mp4" autoplay loop muted></video></div>
+    <div class="item"><video src="https://www.w3schools.com/html/mov_bbb.mp4" autoplay loop muted></video></div>
     <div class="item"><img src="https://via.placeholder.com/200x300?text=4"></div>
     <div class="item"><img src="https://via.placeholder.com/200x300?text=5"></div>
     <div class="item"><img src="https://via.placeholder.com/200x300?text=6"></div>
+    <div class="item"><img src="https://via.placeholder.com/200x300?text=1"></div> <!-- Clone first -->
   </div>
   <button class="nav-btn" id="prev">&#10094;</button>
   <button class="nav-btn" id="next">&#10095;</button>
@@ -166,43 +167,52 @@
 const slide = document.getElementById('carouselSlide');
 let items = Array.from(slide.children);
 let totalItems = items.length;
+const container = document.querySelector('.carousel-container');
+let centerIndex = 2; // Original 1st item (index after first clone)
 
-// Start with middle item (3rd) as center
-let centerIndex = 2;
-
+// Function to update visible items and center
 function updateCarousel() {
   items.forEach(item => item.classList.remove('center', 'visible'));
-
-  // Show center + left + right
   const left = (centerIndex - 1 + totalItems) % totalItems;
   const right = (centerIndex + 1) % totalItems;
-
   items[left].classList.add('visible');
   items[centerIndex].classList.add('center', 'visible');
   items[right].classList.add('visible');
 
-  // Calculate dynamic offset to center the center item
   const itemWidth = items[0].offsetWidth + 20; // include margin
-  const containerWidth = document.querySelector('.carousel-container').offsetWidth;
-  const offset = containerWidth / 2 - itemWidth / 2 - itemWidth * centerIndex;
+  const offset = container.offsetWidth / 2 - itemWidth / 2 - itemWidth * centerIndex;
+  slide.style.transition = 'transform 0.5s ease-in-out';
   slide.style.transform = `translateX(${offset}px)`;
 }
 
+// Next & Prev with infinite loop handling
 function next() {
-  centerIndex = (centerIndex + 1) % totalItems;
+  centerIndex++;
   updateCarousel();
+  if(centerIndex === totalItems - 1){ // if clone first
+    setTimeout(() => {
+      slide.style.transition = 'none';
+      centerIndex = 1; // real first
+      updateCarousel();
+    }, 500);
+  }
 }
 
 function prev() {
-  centerIndex = (centerIndex - 1 + totalItems) % totalItems;
+  centerIndex--;
   updateCarousel();
+  if(centerIndex === 0){ // if clone last
+    setTimeout(() => {
+      slide.style.transition = 'none';
+      centerIndex = totalItems - 2; // real last
+      updateCarousel();
+    }, 500);
+  }
 }
 
 document.getElementById('next').addEventListener('click', next);
 document.getElementById('prev').addEventListener('click', prev);
 window.addEventListener('resize', updateCarousel);
-
-updateCarousel();
 
 // Letter popup
 const openLetterBtn = document.getElementById('openLetterBtn');
@@ -210,6 +220,9 @@ const letterPopup = document.getElementById('letterPopup');
 const closeLetterBtn = document.getElementById('closeLetterBtn');
 openLetterBtn.addEventListener('click', () => letterPopup.classList.add('open'));
 closeLetterBtn.addEventListener('click', () => letterPopup.classList.remove('open'));
+
+// Initial
+updateCarousel();
 </script>
 
 </body>
