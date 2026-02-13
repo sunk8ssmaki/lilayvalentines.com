@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentine's Secret Letter</title>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  /* Body */
+  body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(135deg, #ffd1dc, #fff1f3);
+    font-family: 'Quicksand', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Secret letter trigger (GIF bear) */
+  .secret-letter {
+    width: 150px;
+    cursor: pointer;
+    position: absolute;
+    top: 40%;
+    left: 40%;
+    transition: transform 0.3s;
+  }
+  .secret-letter:hover {
+    transform: scale(1.1);
+  }
+
+  /* Inbox envelope */
+  .inbox {
+    position: absolute;
+    bottom: 10%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 1s ease;
+  }
+  .inbox.visible {
+    opacity: 1;
+  }
+
+  .envelope {
+    width: 180px;
+    height: 120px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    overflow: hidden;
+  }
+
+  .envelope::before {
+    content: '';
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background: rgba(255,182,193,0.3);
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+    top: -50%;
+    left: -50%;
+    transition: transform 0.6s ease;
+    z-index: 1;
+  }
+
+  .envelope:hover::before {
+    transform: rotate(180deg);
+  }
+
+  .circle-photo {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    border: 3px solid #ffc0cb;
+    background-size: cover;
+    background-position: center;
+    z-index: 2;
+  }
+
+  .message {
+    margin-top: 10px;
+    font-weight: 600;
+    color: #d63469;
+    text-align: center;
+  }
+
+  /* Card */
+  .card {
+    position: absolute;
+    width: 300px;
+    height: 200px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 12px 24px rgba(0,0,0,0.3);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform 0.6s ease;
+    padding: 20px;
+    text-align: center;
+    font-weight: 400;
+    line-height: 1.4;
+    color: #333;
+  }
+  .card.open {
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  /* Open button */
+  .open-btn {
+    margin-top: 10px;
+    padding: 8px 16px;
+    background: #ff85a2;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    color: white;
+    font-weight: 600;
+    transition: background 0.3s;
+  }
+  .open-btn:hover {
+    background: #d63469;
+  }
+
+</style>
+</head>
+<body>
+
+<!-- Secret letter -->
+<img src="https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif" alt="Bear GIF" class="secret-letter" id="secretLetter">
+
+<!-- Inbox -->
+<div class="inbox" id="inbox">
+  <div class="envelope" id="envelope">
+    <div class="circle-photo" style="background-image: url('https://via.placeholder.com/90');"></div>
+  </div>
+  <div class="message">Happy Valentines Lilay!</div>
+  <button class="open-btn" id="openCardBtn">Open Card</button>
+</div>
+
+<!-- Card -->
+<div class="card" id="card">
+  <h3>To My Love ❤️</h3>
+  <p>
+    Here is a secret letter just for you…<br>
+    I hope this makes your Valentine’s Day extra special!<br>
+    You're my favorite everything. 🌸
+  </p>
+</div>
+
+<!-- Music -->
+<audio id="bgMusic" loop>
+  <source src="YOUR_MUSIC_LINK_HERE.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+  const secretLetter = document.getElementById('secretLetter');
+  const inbox = document.getElementById('inbox');
+  const openCardBtn = document.getElementById('openCardBtn');
+  const card = document.getElementById('card');
+  const bgMusic = document.getElementById('bgMusic');
+
+  secretLetter.addEventListener('click', () => {
+    secretLetter.style.transform = 'scale(0)';
+    inbox.classList.add('visible');
+    bgMusic.play();
+  });
+
+  openCardBtn.addEventListener('click', () => {
+    card.classList.add('open');
+  });
+</script>
+
+</body>
+</html>
