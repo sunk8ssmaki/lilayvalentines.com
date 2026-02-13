@@ -42,6 +42,7 @@ h1 {
   align-items: center;
   gap: 20px;
   width: 100%;
+  z-index: 1;
 }
 
 .carousel-slide .item {
@@ -152,6 +153,7 @@ h1 {
   border-radius: 3px;
   opacity: 0.8;
   animation: floatUp linear infinite;
+  z-index: 0;
 }
 .heart::before,
 .heart::after {
@@ -212,34 +214,25 @@ const closeLetterBtn = document.getElementById('closeLetterBtn');
 openLetterBtn.addEventListener('click', () => letterPopup.classList.add('open'));
 closeLetterBtn.addEventListener('click', () => letterPopup.classList.remove('open'));
 
-// Dreamy hearts
+// Dreamy hearts on left and right sides
 const heartsContainer = document.getElementById('hearts');
-const NUM_HEARTS = 25;
-const carouselCenter = document.querySelector('.carousel-slide .center');
+const NUM_HEARTS = 20;
+const containerRect = document.querySelector('.carousel-container').getBoundingClientRect();
 
 for (let i = 0; i < NUM_HEARTS; i++) {
   const heart = document.createElement('div');
   heart.classList.add('heart');
-  heart.style.left = `${Math.random() * 100}%`;
+  // Random left/right side
+  const side = Math.random() < 0.5 ? 'left' : 'right';
+  if(side === 'left') {
+    heart.style.left = `${Math.random() * 20}%`;
+  } else {
+    heart.style.left = `${80 + Math.random() * 20}%`;
+  }
   heart.style.animationDuration = `${5 + Math.random()*5}s`;
   heart.style.setProperty('--driftX', `${Math.random()*60 - 30}px`);
   heartsContainer.appendChild(heart);
 }
-
-// Make hearts pulse when near center
-function animateHearts() {
-  const centerRect = carouselCenter.getBoundingClientRect();
-  document.querySelectorAll('.heart').forEach(heart => {
-    const heartRect = heart.getBoundingClientRect();
-    const dx = Math.abs(heartRect.left + heartRect.width/2 - (centerRect.left + centerRect.width/2));
-    const scale = 1 + Math.max(0, 1 - dx/300); // bigger when closer
-    const opacity = 0.5 + Math.max(0, 0.5 - dx/600);
-    heart.style.transform = `translateX(var(--driftX)) translateY(-${heartRect.top}px) scale(${scale}) rotate(0deg)`;
-    heart.style.opacity = opacity;
-  });
-  requestAnimationFrame(animateHearts);
-}
-requestAnimationFrame(animateHearts);
 </script>
 
 </body>
