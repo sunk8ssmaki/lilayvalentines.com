@@ -3,12 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Valentine Card Carousel</title>
+<title>Valentine Coverflow Carousel</title>
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
 <style>
   body {
     margin: 0;
-    padding: 0;
     font-family: 'Quicksand', sans-serif;
     background: linear-gradient(135deg, #ffd1dc, #fff1f3);
     display: flex;
@@ -30,37 +29,41 @@
   .carousel-container {
     position: relative;
     width: 90%;
-    max-width: 1200px;
+    max-width: 1000px;
     margin: 50px 0;
+    perspective: 1000px;
     overflow: hidden;
   }
 
   .carousel-slide {
     display: flex;
-    gap: 20px;
+    justify-content: center;
+    align-items: center;
     transition: transform 0.5s ease-in-out;
-    will-change: transform;
   }
 
   .carousel-slide .item {
+    position: relative;
     width: 250px;
     height: 160px;
-    flex-shrink: 0;
+    margin: 0 10px;
     border-radius: 16px;
     overflow: hidden;
     border: 3px solid #ffc0cb;
     box-shadow: 0 6px 16px rgba(0,0,0,0.2);
-    transition: all 0.4s ease;
+    transition: all 0.5s ease;
+    flex-shrink: 0;
+    transform: scale(0.8);
     filter: blur(2px);
-    transform: scale(0.9);
   }
 
   .carousel-slide .item.center {
     width: 320px;
     height: 200px;
-    filter: blur(0);
     transform: scale(1);
+    filter: blur(0);
     border-color: #d63469;
+    z-index: 2;
   }
 
   .carousel-slide img,
@@ -81,15 +84,12 @@
     padding: 12px 16px;
     cursor: pointer;
     border-radius: 50%;
-    z-index: 2;
+    z-index: 3;
   }
-  .nav-btn:hover {
-    background: rgba(214,52,105,0.9);
-  }
+  .nav-btn:hover { background: rgba(214,52,105,0.9); }
   #prev { left: 10px; }
   #next { right: 10px; }
 
-  /* Open Letter Button */
   .open-letter-btn {
     margin-top: 30px;
     background: #ff85a2;
@@ -103,11 +103,8 @@
     box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     transition: background 0.3s;
   }
-  .open-letter-btn:hover {
-    background: #d63469;
-  }
+  .open-letter-btn:hover { background: #d63469; }
 
-  /* Letter popup */
   .letter-popup {
     position: fixed;
     top: 50%;
@@ -122,12 +119,8 @@
     padding: 25px;
     z-index: 1000;
     text-align: center;
-    font-size: 1rem;
-    line-height: 1.5;
   }
-  .letter-popup.open {
-    transform: translate(-50%, -50%) scale(1);
-  }
+  .letter-popup.open { transform: translate(-50%, -50%) scale(1); }
 
   .close-btn {
     margin-top: 20px;
@@ -138,10 +131,7 @@
     border-radius: 12px;
     cursor: pointer;
   }
-  .close-btn:hover {
-    background: #d63469;
-  }
-
+  .close-btn:hover { background: #d63469; }
 </style>
 </head>
 <body>
@@ -150,14 +140,12 @@
 
 <div class="carousel-container">
   <div class="carousel-slide" id="carouselSlide">
-    <!-- You can replace images/videos with GitHub URLs -->
-    <div class="item"><img src="https://via.placeholder.com/250x160?text=1" alt="1"></div>
-    <div class="item"><img src="https://via.placeholder.com/250x160?text=2" alt="2"></div>
+    <div class="item"><img src="https://via.placeholder.com/250x160?text=1"></div>
+    <div class="item"><img src="https://via.placeholder.com/250x160?text=2"></div>
     <div class="item"><video src="https://www.w3schools.com/html/mov_bbb.mp4" autoplay loop muted></video></div>
-    <div class="item"><img src="https://via.placeholder.com/250x160?text=4" alt="4"></div>
-    <div class="item"><img src="https://via.placeholder.com/250x160?text=5" alt="5"></div>
+    <div class="item"><img src="https://via.placeholder.com/250x160?text=4"></div>
+    <div class="item"><img src="https://via.placeholder.com/250x160?text=5"></div>
   </div>
-
   <button class="nav-btn" id="prev">&#10094;</button>
   <button class="nav-btn" id="next">&#10095;</button>
 </div>
@@ -166,64 +154,53 @@
 
 <div class="letter-popup" id="letterPopup">
   <h3>To My Love ❤️</h3>
-  <p>
-    You are my sunshine and my heart. I hope this little surprise makes your Valentine's Day extra special! 🌸
-  </p>
+  <p>You are my sunshine and my heart. I hope this little surprise makes your Valentine's Day extra special! 🌸</p>
   <button class="close-btn" id="closeLetterBtn">Close</button>
 </div>
 
 <script>
-  const slide = document.getElementById('carouselSlide');
-  const items = Array.from(slide.children);
-  let counter = 0;
+const slide = document.getElementById('carouselSlide');
+let items = Array.from(slide.children);
+let totalItems = items.length;
+let centerIndex = 2; // starting center index
 
-  // Duplicate first and last items for infinite loop
-  const firstClone = items[0].cloneNode(true);
-  const lastClone = items[items.length - 1].cloneNode(true);
-  slide.appendChild(firstClone);
-  slide.insertBefore(lastClone, items[0]);
+function updateCarousel() {
+  items.forEach((item, i) => item.classList.remove('center'));
+  // Assign center class to the centerIndex
+  items[centerIndex].classList.add('center');
+  // Transform the slide so center item is in middle
+  const itemWidth = items[0].offsetWidth + 20;
+  const offset = (window.innerWidth / 2) - (itemWidth / 2) - (itemWidth * centerIndex);
+  slide.style.transform = `translateX(${offset}px)`;
+}
 
-  let allItems = Array.from(slide.children);
-
-  function updateCarousel() {
-    const centerIndex = Math.floor(allItems.length / 2);
-    const itemWidth = allItems[0].offsetWidth + 20; // include gap
-    slide.style.transform = `translateX(${-itemWidth * counter}px)`;
-    allItems.forEach(item => item.classList.remove('center'));
-    allItems[counter + 1].classList.add('center'); // center always 2nd item visually
-  }
-
-  function next() {
-    counter++;
-    if(counter >= allItems.length - 2) counter = 0;
-    updateCarousel();
-  }
-
-  function prev() {
-    counter--;
-    if(counter < 0) counter = allItems.length - 2;
-    updateCarousel();
-  }
-
-  document.getElementById('next').addEventListener('click', next);
-  document.getElementById('prev').addEventListener('click', prev);
-
-  counter = 1; // start at first real item
+// Next: shift everything left
+function next() {
+  centerIndex++;
+  if(centerIndex >= totalItems) centerIndex = 0;
   updateCarousel();
+}
 
-  // Letter popup
-  const openLetterBtn = document.getElementById('openLetterBtn');
-  const letterPopup = document.getElementById('letterPopup');
-  const closeLetterBtn = document.getElementById('closeLetterBtn');
+// Prev: shift everything right
+function prev() {
+  centerIndex--;
+  if(centerIndex < 0) centerIndex = totalItems - 1;
+  updateCarousel();
+}
 
-  openLetterBtn.addEventListener('click', () => {
-    letterPopup.classList.add('open');
-  });
-  closeLetterBtn.addEventListener('click', () => {
-    letterPopup.classList.remove('open');
-  });
+document.getElementById('next').addEventListener('click', next);
+document.getElementById('prev').addEventListener('click', prev);
 
-  window.addEventListener('resize', updateCarousel);
+window.addEventListener('resize', updateCarousel);
+updateCarousel();
+
+// Letter popup
+const openLetterBtn = document.getElementById('openLetterBtn');
+const letterPopup = document.getElementById('letterPopup');
+const closeLetterBtn = document.getElementById('closeLetterBtn');
+
+openLetterBtn.addEventListener('click', () => letterPopup.classList.add('open'));
+closeLetterBtn.addEventListener('click', () => letterPopup.classList.remove('open'));
 </script>
 
 </body>
