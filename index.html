@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Valentine Coverflow Carousel</title>
+<title>Infinite Center-Focused Carousel</title>
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
 <style>
   body {
@@ -28,33 +28,29 @@
 
   .carousel-container {
     position: relative;
-    width: 90%;
+    width: 100%;
     max-width: 1000px;
     margin: 50px 0;
-    perspective: 1000px;
     overflow: hidden;
   }
 
   .carousel-slide {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    gap: 20px;
     transition: transform 0.5s ease-in-out;
   }
 
   .carousel-slide .item {
-    position: relative;
     width: 250px;
     height: 160px;
-    margin: 0 10px;
+    flex-shrink: 0;
     border-radius: 16px;
     overflow: hidden;
     border: 3px solid #ffc0cb;
     box-shadow: 0 6px 16px rgba(0,0,0,0.2);
     transition: all 0.5s ease;
-    flex-shrink: 0;
-    transform: scale(0.8);
     filter: blur(2px);
+    transform: scale(0.8);
   }
 
   .carousel-slide .item.center {
@@ -132,6 +128,7 @@
     cursor: pointer;
   }
   .close-btn:hover { background: #d63469; }
+
 </style>
 </head>
 <body>
@@ -161,30 +158,40 @@
 <script>
 const slide = document.getElementById('carouselSlide');
 let items = Array.from(slide.children);
-let totalItems = items.length;
-let centerIndex = 2; // starting center index
+
+// Duplicate all items for smooth infinite loop
+items.forEach(item => slide.appendChild(item.cloneNode(true)));
+let totalItems = slide.children.length;
+let centerIndex = 2; // middle item index
 
 function updateCarousel() {
-  items.forEach((item, i) => item.classList.remove('center'));
-  // Assign center class to the centerIndex
-  items[centerIndex].classList.add('center');
-  // Transform the slide so center item is in middle
-  const itemWidth = items[0].offsetWidth + 20;
+  Array.from(slide.children).forEach(item => item.classList.remove('center'));
+  slide.children[centerIndex].classList.add('center');
+  const itemWidth = slide.children[0].offsetWidth + 20; // include gap
   const offset = (window.innerWidth / 2) - (itemWidth / 2) - (itemWidth * centerIndex);
   slide.style.transform = `translateX(${offset}px)`;
 }
 
-// Next: shift everything left
 function next() {
   centerIndex++;
-  if(centerIndex >= totalItems) centerIndex = 0;
+  if(centerIndex >= totalItems - 2) {
+    // Shift carousel to avoid jump
+    centerIndex = 2;
+    slide.style.transition = 'none';
+    updateCarousel();
+    requestAnimationFrame(() => { slide.style.transition = 'transform 0.5s ease-in-out'; });
+  }
   updateCarousel();
 }
 
-// Prev: shift everything right
 function prev() {
   centerIndex--;
-  if(centerIndex < 0) centerIndex = totalItems - 1;
+  if(centerIndex < 2) {
+    centerIndex = totalItems - 3;
+    slide.style.transition = 'none';
+    updateCarousel();
+    requestAnimationFrame(() => { slide.style.transition = 'transform 0.5s ease-in-out'; });
+  }
   updateCarousel();
 }
 
