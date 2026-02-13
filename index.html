@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Valentine Carousel</title>
+<title>Center-Focused Valentine Carousel</title>
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
 <style>
   body {
@@ -36,13 +36,13 @@
 
   .carousel-slide {
     display: flex;
-    gap: 20px;
     transition: transform 0.5s ease-in-out;
   }
 
   .carousel-slide .item {
     width: 250px;
     height: 160px;
+    margin: 0 10px;
     flex-shrink: 0;
     border-radius: 16px;
     overflow: hidden;
@@ -167,44 +167,31 @@ const slide = document.getElementById('carouselSlide');
 let items = Array.from(slide.children);
 let totalItems = items.length;
 
-// Clone items to allow infinite smooth loop
-items.forEach(item => slide.appendChild(item.cloneNode(true)));
-items = Array.from(slide.children);
+// Start with middle item (3rd) as center
+let centerIndex = 2;
 
-let centerIndex = 2; // Start: default center item
 function updateCarousel() {
   items.forEach(item => item.classList.remove('center', 'visible'));
-  // Show 3 items: center + left + right
-  const left = centerIndex -1;
-  const right = centerIndex +1;
-  items[left]?.classList.add('visible');
-  items[centerIndex].classList.add('center', 'visible');
-  items[right]?.classList.add('visible');
+  // Show center + left + right
+  const left = (centerIndex -1 + totalItems) % totalItems;
+  const right = (centerIndex +1) % totalItems;
 
-  const itemWidth = items[0].offsetWidth + 20;
+  items[left].classList.add('visible');
+  items[centerIndex].classList.add('center', 'visible');
+  items[right].classList.add('visible');
+
+  const itemWidth = items[0].offsetWidth + 20; // include margin
   const offset = (window.innerWidth/2) - (itemWidth/2) - (itemWidth * centerIndex);
   slide.style.transform = `translateX(${offset}px)`;
 }
 
 function next() {
-  centerIndex++;
-  if(centerIndex >= items.length -1) {
-    centerIndex = 2;
-    slide.style.transition = 'none';
-    updateCarousel();
-    requestAnimationFrame(() => slide.style.transition = 'transform 0.5s ease-in-out');
-  }
+  centerIndex = (centerIndex + 1) % totalItems;
   updateCarousel();
 }
 
 function prev() {
-  centerIndex--;
-  if(centerIndex < 2) {
-    centerIndex = items.length -3;
-    slide.style.transition = 'none';
-    updateCarousel();
-    requestAnimationFrame(() => slide.style.transition = 'transform 0.5s ease-in-out');
-  }
+  centerIndex = (centerIndex - 1 + totalItems) % totalItems;
   updateCarousel();
 }
 
@@ -220,7 +207,7 @@ const letterPopup = document.getElementById('letterPopup');
 const closeLetterBtn = document.getElementById('closeLetterBtn');
 openLetterBtn.addEventListener('click', () => letterPopup.classList.add('open'));
 closeLetterBtn.addEventListener('click', () => letterPopup.classList.remove('open'));
-</script>
 
+</script>
 </body>
 </html>
