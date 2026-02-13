@@ -3,132 +3,122 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Valentine's Secret Letter</title>
+<title>Valentine Card</title>
 <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
 <style>
-  /* Body */
   body {
     margin: 0;
-    height: 100vh;
-    background: linear-gradient(135deg, #ffd1dc, #fff1f3);
+    padding: 0;
     font-family: 'Quicksand', sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    position: relative;
-  }
-
-  /* Secret letter trigger (GIF bear) */
-  .secret-letter {
-    width: 150px;
-    cursor: pointer;
-    position: absolute;
-    top: 40%;
-    left: 40%;
-    transition: transform 0.3s;
-  }
-  .secret-letter:hover {
-    transform: scale(1.1);
-  }
-
-  /* Inbox envelope */
-  .inbox {
-    position: absolute;
-    bottom: 10%;
+    background: linear-gradient(135deg, #ffd1dc, #fff1f3);
     display: flex;
     flex-direction: column;
     align-items: center;
-    opacity: 0;
-    transition: opacity 1s ease;
-  }
-  .inbox.visible {
-    opacity: 1;
+    min-height: 100vh;
   }
 
-  .envelope {
-    width: 180px;
-    height: 120px;
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    overflow: hidden;
-  }
-
-  .envelope::before {
-    content: '';
-    position: absolute;
-    width: 200%;
-    height: 200%;
-    background: rgba(255,182,193,0.3);
-    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-    top: -50%;
-    left: -50%;
-    transition: transform 0.6s ease;
-    z-index: 1;
-  }
-
-  .envelope:hover::before {
-    transform: rotate(180deg);
-  }
-
-  .circle-photo {
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
-    border: 3px solid #ffc0cb;
-    background-size: cover;
-    background-position: center;
-    z-index: 2;
-  }
-
-  .message {
-    margin-top: 10px;
-    font-weight: 600;
+  h1 {
+    margin-top: 40px;
+    font-size: 2.8rem;
     color: #d63469;
     text-align: center;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.1);
   }
 
-  /* Card */
-  .card {
+  /* Carousel */
+  .carousel-container {
+    position: relative;
+    width: 320px;
+    height: 220px;
+    margin: 40px 0;
+    overflow: hidden;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    border: 4px solid #ffc0cb;
+  }
+
+  .carousel-slide {
+    display: flex;
+    width: 1280px; /* 4 images x 320px */
+    transition: transform 0.5s ease-in-out;
+  }
+
+  .carousel-slide img {
+    width: 320px;
+    height: 220px;
+    object-fit: cover;
+  }
+
+  /* Navigation buttons */
+  .nav-btn {
     position: absolute;
-    width: 300px;
-    height: 200px;
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 12px 24px rgba(0,0,0,0.3);
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(214,52,105,0.7);
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 50%;
+  }
+  .nav-btn:hover {
+    background: rgba(214,52,105,0.9);
+  }
+  #prev { left: 10px; }
+  #next { right: 10px; }
+
+  /* Letter Section */
+  .letter-container {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  .open-letter-btn {
+    background: #ff85a2;
+    color: white;
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .open-letter-btn:hover {
+    background: #d63469;
+  }
+
+  /* Letter popup */
+  .letter-popup {
+    position: fixed;
     top: 50%;
     left: 50%;
+    width: 300px;
+    max-width: 90%;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 12px 24px rgba(0,0,0,0.3);
     transform: translate(-50%, -50%) scale(0);
-    transition: transform 0.6s ease;
+    transition: transform 0.4s ease-in-out;
     padding: 20px;
+    z-index: 1000;
     text-align: center;
-    font-weight: 400;
-    line-height: 1.4;
-    color: #333;
   }
-  .card.open {
+  .letter-popup.open {
     transform: translate(-50%, -50%) scale(1);
   }
 
-  /* Open button */
-  .open-btn {
-    margin-top: 10px;
-    padding: 8px 16px;
+  .close-btn {
+    margin-top: 15px;
     background: #ff85a2;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
     color: white;
-    font-weight: 600;
-    transition: background 0.3s;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
   }
-  .open-btn:hover {
+  .close-btn:hover {
     background: #d63469;
   }
 
@@ -136,48 +126,71 @@
 </head>
 <body>
 
-<!-- Secret letter -->
-<img src="https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif" alt="Bear GIF" class="secret-letter" id="secretLetter">
+<h1>Happy Valentines Lilay</h1>
 
-<!-- Inbox -->
-<div class="inbox" id="inbox">
-  <div class="envelope" id="envelope">
-    <div class="circle-photo" style="background-image: url('https://via.placeholder.com/90');"></div>
+<!-- Carousel -->
+<div class="carousel-container">
+  <div class="carousel-slide" id="carouselSlide">
+    <!-- Palitan ang src ng GitHub image links mo -->
+    <img src="https://via.placeholder.com/320x220?text=Pic+1" alt="Pic 1">
+    <img src="https://via.placeholder.com/320x220?text=Pic+2" alt="Pic 2">
+    <img src="https://via.placeholder.com/320x220?text=Pic+3" alt="Pic 3">
+    <img src="https://via.placeholder.com/320x220?text=Pic+4" alt="Pic 4">
   </div>
-  <div class="message">Happy Valentines Lilay!</div>
-  <button class="open-btn" id="openCardBtn">Open Card</button>
+  <button class="nav-btn" id="prev">&#10094;</button>
+  <button class="nav-btn" id="next">&#10095;</button>
 </div>
 
-<!-- Card -->
-<div class="card" id="card">
+<!-- Letter button -->
+<div class="letter-container">
+  <button class="open-letter-btn" id="openLetterBtn">Open Letter</button>
+</div>
+
+<!-- Letter popup -->
+<div class="letter-popup" id="letterPopup">
   <h3>To My Love ❤️</h3>
   <p>
-    Here is a secret letter just for you…<br>
-    I hope this makes your Valentine’s Day extra special!<br>
-    You're my favorite everything. 🌸
+    You are my sunshine and my heart. I hope this little surprise makes your Valentine's Day extra special! 🌸
   </p>
+  <button class="close-btn" id="closeLetterBtn">Close</button>
 </div>
 
-<!-- Music -->
-<audio id="bgMusic" loop>
-  <source src="YOUR_MUSIC_LINK_HERE.mp3" type="audio/mpeg">
-</audio>
-
 <script>
-  const secretLetter = document.getElementById('secretLetter');
-  const inbox = document.getElementById('inbox');
-  const openCardBtn = document.getElementById('openCardBtn');
-  const card = document.getElementById('card');
-  const bgMusic = document.getElementById('bgMusic');
+  // Carousel functionality
+  const carouselSlide = document.getElementById('carouselSlide');
+  const images = document.querySelectorAll('.carousel-slide img');
+  const prevBtn = document.getElementById('prev');
+  const nextBtn = document.getElementById('next');
 
-  secretLetter.addEventListener('click', () => {
-    secretLetter.style.transform = 'scale(0)';
-    inbox.classList.add('visible');
-    bgMusic.play();
+  let counter = 0;
+
+  function updateCarousel() {
+    carouselSlide.style.transform = 'translateX(' + (-320 * counter) + 'px)';
+  }
+
+  nextBtn.addEventListener('click', () => {
+    counter++;
+    if(counter >= images.length) counter = 0;
+    updateCarousel();
   });
 
-  openCardBtn.addEventListener('click', () => {
-    card.classList.add('open');
+  prevBtn.addEventListener('click', () => {
+    counter--;
+    if(counter < 0) counter = images.length - 1;
+    updateCarousel();
+  });
+
+  // Letter popup functionality
+  const openLetterBtn = document.getElementById('openLetterBtn');
+  const letterPopup = document.getElementById('letterPopup');
+  const closeLetterBtn = document.getElementById('closeLetterBtn');
+
+  openLetterBtn.addEventListener('click', () => {
+    letterPopup.classList.add('open');
+  });
+
+  closeLetterBtn.addEventListener('click', () => {
+    letterPopup.classList.remove('open');
   });
 </script>
 
