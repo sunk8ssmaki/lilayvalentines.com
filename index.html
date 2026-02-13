@@ -9,7 +9,8 @@
 body {
   margin: 0;
   font-family: 'Quicksand', sans-serif;
-  background: linear-gradient(135deg, #ffd1dc, #fff1f3);
+  /* Soft pastel pink gradient background */
+  background: linear-gradient(135deg, #ffd1dc, #ffe1e6, #fddde6, #fce4ec);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -217,12 +218,11 @@ closeLetterBtn.addEventListener('click', () => letterPopup.classList.remove('ope
 // Dreamy hearts on left and right sides
 const heartsContainer = document.getElementById('hearts');
 const NUM_HEARTS = 20;
-const containerRect = document.querySelector('.carousel-container').getBoundingClientRect();
 
 for (let i = 0; i < NUM_HEARTS; i++) {
   const heart = document.createElement('div');
   heart.classList.add('heart');
-  // Random left/right side
+  // Random left/right side, only edges
   const side = Math.random() < 0.5 ? 'left' : 'right';
   if(side === 'left') {
     heart.style.left = `${Math.random() * 20}%`;
