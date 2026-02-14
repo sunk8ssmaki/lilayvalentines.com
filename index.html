@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>❤️ lilay valentines ❤️</title>
+<title>Valentine Dream Carousel</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
 
@@ -21,24 +21,7 @@ body{
   position:relative;
 }
 
-/* STARRY BACKGROUND */
-.stars,.stars2{
-  position:fixed;inset:0;pointer-events:none;z-index:0;
-}
-.stars{
-  background:transparent;
-  box-shadow:0 0 1px #fff, 50px 100px #fff, 100px 200px #fff, 150px 50px #fff, 200px 150px #fff;
-  animation: twinkle 100s linear infinite;
-}
-.stars2{
-  background:transparent;
-  box-shadow:25px 50px #ffb6c1, 75px 150px #ffb6c1, 125px 25px #ffb6c1, 175px 125px #ffb6c1;
-  animation: twinkle2 140s linear infinite;
-}
-@keyframes twinkle{0%,100%{transform:translateY(0);}50%{transform:translateY(-1000px);} }
-@keyframes twinkle2{0%,100%{transform:translateY(0);}50%{transform:translateY(-1200px);}}
-
-/* TITLE WITH DECORATIONS */
+/* TITLE */
 .title-container{
   position:relative;
   margin:30px 0 15px;
@@ -52,24 +35,16 @@ h1{
   position:relative;
   z-index:3;
 }
-
-/* small balloons and hearts around title */
 .title-decoration{
   position:absolute;
   width:12px;height:12px;
   background:pink;
   border-radius:50%;
-  animation:floatDecor 6s ease-in-out infinite;
 }
 .title-decoration:nth-child(1){left:-20px;top:-10px;}
 .title-decoration:nth-child(2){right:-15px;top:5px;}
 .title-decoration:nth-child(3){left:10%;top:-15px;background:#ff85a2;}
 .title-decoration:nth-child(4){right:12%;top:-12px;background:#ffccdd;}
-
-@keyframes floatDecor{
-  0%,100%{transform:translateY(0);}
-  50%{transform:translateY(-8px);}
-}
 
 /* CAROUSEL */
 .carousel-container{
@@ -86,13 +61,10 @@ h1{
   display:flex;
   justify-content:center;
 }
-
 .carousel-slide{
   display:flex;
   gap:24px;
-  transition:transform 0.6s ease;
 }
-
 .carousel-slide .item{
   width:240px;height:360px;
   border-radius:24px;
@@ -101,24 +73,15 @@ h1{
   box-shadow:0 12px 24px rgba(214,52,105,0.3);
   transform:scale(0.85);
   opacity:0.6;
-  transition:all 0.5s ease;
   position:relative;
 }
-
 .carousel-slide .item.center{
   transform:scale(1);
   opacity:1;
   border:5px solid #ff85a2;
   box-shadow:0 16px 36px rgba(214,52,105,0.5);
   z-index:2;
-  animation:glow 2s infinite ease-in-out;
 }
-
-@keyframes glow{
-  0%,100%{box-shadow:0 16px 36px rgba(214,52,105,0.5);}
-  50%{box-shadow:0 22px 48px rgba(214,52,105,0.8);}
-}
-
 .carousel-slide video{
   width:100%;height:100%;
   object-fit:cover;
@@ -159,12 +122,26 @@ button:disabled{opacity:.5;cursor:default;}
 }
 .letter-popup.open{transform:translate(-50%,-50%) scale(1);}
 .letter-text{white-space:pre-wrap;line-height:1.7;text-align:justify;}
+
+/* FLOWER CANVAS */
+#flowerCanvas{
+  display:none;
+  position:fixed;
+  top:0;left:0;
+  width:100%;
+  height:100%;
+  z-index:4;
+}
+.ending-text{
+  font-size:2rem;
+  color:white;
+  text-align:center;
+  z-index:5;
+}
+#homeBtn{display:none;}
 </style>
 </head>
 <body>
-
-<div class="stars"></div>
-<div class="stars2"></div>
 
 <div class="title-container">
   <h1>Happy Valentines Lilay</h1>
@@ -174,7 +151,7 @@ button:disabled{opacity:.5;cursor:default;}
   <div class="title-decoration"></div>
 </div>
 
-<div class="carousel-container">
+<div class="carousel-container" id="carouselMain">
   <div class="carousel-slide" id="carouselSlide">
     <div class="item">
       <video src="00cc6afcd52ac41a63c01ccda9e7ffa4.mp4" autoplay loop muted></video>
@@ -186,7 +163,6 @@ button:disabled{opacity:.5;cursor:default;}
       <video src="00cc6afcd52ac41a63c01ccda9e7ffa4.mp4" autoplay loop muted></video>
     </div>
   </div>
-  <div id="hearts"></div>
 </div>
 
 <button id="openLetterBtn">Open Letter</button>
@@ -205,17 +181,15 @@ button:disabled{opacity:.5;cursor:default;}
 <iframe id="ytplayer" src="https://www.youtube.com/embed/E7Aif6vPMhU?enablejsapi=1" allow="autoplay"></iframe>
 </div>
 
-<!-- ULTRA PRO PREMIUM FLOWERS 3D DEPTH -->
+<!-- FLOWERS -->
 <canvas id="flowerCanvas"></canvas>
-<div class="ending-text" style="position:fixed;top:20px;width:100%;text-align:center;font-size:2rem;color:white;z-index:5;opacity:0;">if i could, then i would</div>
-<button id="homeBtn" style="display:none;position:fixed;top:20px;right:20px;z-index:5;">🏠 Home</button>
+<div class="ending-text">if i could, then i would</div>
+<button id="homeBtn">🏠 Home</button>
 
 <script>
-// --- LETTER ---
-const part1=`helloo baby girl kamusta? happy valentines po:) iloveyousomuch honhon kahit muka kang kalaban araw araw hahaha joke lang, btw lilay i want you to know na super proud ako sa efforts mo na ginagawa sa relationship natin——— proud ako dahil you are trying very very hard to the point na gusto mo pa malaman kung ano pa ang dapat gawin mo sa relationship natin. i am so proud of you mahal ko sobrang na aappreciate ko lahat ng small and big details na ginagawa mo for "us" 
-glad ako na nag grgrow tayo in different ways minsan sa away, minsan sa pagmamahalan——— but that's it mahal ko, ang layo layo na natin. andami na agad natin napagdaanan at lahat ng yon nalagpasan natin dahil mas nangingibabaw ang love natin sa isa't-isa.`;
-const part2=` honhon ko, hindi ako magsasawang bumawi at mag promise kasi lahat yon tutupadin ko. kaya don't worry future wifey ko you're more than enough mahal ko, we are more than enough. kaya we need to surpass the limit para ma-handle natin ang situation 
-na out of our hand para sa future mahal ko we can WORK TOGETHER and we can FIX TOGETHER. Ashley, mahal na mahal na mahal kita always remember na kapag pagod pahinga lang and kapag nasasaktan tuloy ka lang hihi———  ka-inggit flowers nila no, but here's yours:)`;
+// LETTER
+const part1=`helloo baby girl kamusta? happy valentines po:) ...`;
+const part2=`honhon ko, hindi ako magsasawang bumawi ...`;
 
 let idx=0,current=part1;
 function type(){ if(idx<current.length){ typedText.textContent+=current[idx++]; setTimeout(type,26);} }
@@ -231,67 +205,47 @@ nextBtn.style.display="none"; goBtn.disabled=false;
 type();
 };
 
-/* HORIZONTAL CAROUSEL */
+// REMOVE CAROUSEL ANIMATION
 const slide=document.getElementById('carouselSlide');
 const items=slide.querySelectorAll('.item');
-let currentIndex=0;
-function updateCarousel(){
 items.forEach((el,i)=>el.classList.remove('center'));
-items[currentIndex].classList.add('center');
-slide.style.transform=`translateX(-${currentIndex*(items[0].offsetWidth+24)}px)`;
-}
-setInterval(()=>{currentIndex=(currentIndex+1)%items.length;updateCarousel();},4000);
+items[1].classList.add('center'); // keep middle static
 
-/* --- ULTRA PRO PREMIUM FLOWER 3D DEPTH & ANIMATION --- */
-const flowerCanvas=document.getElementById('flowerCanvas');
-const fctx=flowerCanvas.getContext('2d');
-flowerCanvas.width=window.innerWidth;
-flowerCanvas.height=window.innerHeight;
+// FLOWER CANVAS SETUP
+const canvas=document.getElementById('flowerCanvas');
+const ctx=canvas.getContext('2d');
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
 
-// Flower class with stems, petals, leaves, depth
+// Flower class
 class Flower{
     constructor(x,y,type='lily',depth=1){
-        this.x=x;
-        this.y=y;
-        this.depth=depth; // 3D effect
-        this.scale=0;
-        this.targetScale=(0.3+Math.random()*0.7)/depth;
+        this.x=x; this.y=y; this.depth=depth;
+        this.scale=0; this.targetScale=0.8; // smooth bloom
         this.type=type;
         this.rotation=Math.random()*Math.PI*2;
-        this.petalCount=(type==='rose')?10+Math.floor(Math.random()*5):6+Math.floor(Math.random()*4);
-        this.stemHeight=50+Math.random()*100;
+        this.petalCount=8+Math.floor(Math.random()*5); // more petals
+        this.stemHeight=30+Math.random()*50; // shorter stems
         this.color=this.getColor(type);
-        this.bloomSpeed=0.008+Math.random()*0.02;
-        this.leaves=[];
-        for(let i=0;i<2+Math.floor(Math.random()*3);i++){
-            this.leaves.push({angle:Math.random()*Math.PI-0.5,length:10+Math.random()*20});
-        }
+        this.bloomSpeed=0.01+Math.random()*0.02;
     }
     getColor(type){
         switch(type){
-            case 'lily': return {petal:'#ffb6c1',gradient:['#ffc0cb','#ff69b4']};
-            case 'rose': return {petal:'#dc143c',gradient:['#dc143c','#ff0000']};
-            case 'carnation': return {petal:'#ff69b4',gradient:['#ff69b4','#ff1493']};
-            default: return {petal:'#ffd1dc',gradient:['#ffe1e6','#ffcce0']};
+            case 'lily': return ['#ffc0cb','#ff69b4'];
+            case 'rose': return ['#dc143c','#ff0000'];
+            case 'carnation': return ['#ff69b4','#ff1493'];
+            default: return ['#ffd1dc','#ffcce0'];
         }
     }
-    drawStem(ctx){
-        ctx.beginPath();
+    drawStem(){
         ctx.strokeStyle='#228B22';
         ctx.lineWidth=2*this.depth;
+        ctx.beginPath();
         ctx.moveTo(this.x,this.y);
         ctx.lineTo(this.x,this.y+this.stemHeight*this.depth);
         ctx.stroke();
-        this.leaves.forEach(l=>{
-            ctx.beginPath();
-            ctx.strokeStyle='#2e8b57';
-            ctx.lineWidth=1*this.depth;
-            ctx.moveTo(this.x,this.y+this.stemHeight*this.depth/2);
-            ctx.lineTo(this.x+Math.cos(l.angle)*l.length,this.y+this.stemHeight*this.depth/2+Math.sin(l.angle)*l.length);
-            ctx.stroke();
-        });
     }
-    drawPetals(ctx){
+    drawPetals(){
         ctx.save();
         ctx.translate(this.x,this.y);
         ctx.rotate(this.rotation);
@@ -299,38 +253,31 @@ class Flower{
         for(let i=0;i<this.petalCount;i++){
             ctx.rotate((2*Math.PI)/this.petalCount);
             let grad=ctx.createLinearGradient(0,0,0,-30);
-            grad.addColorStop(0,this.color.gradient[0]);
-            grad.addColorStop(1,this.color.gradient[1]);
+            grad.addColorStop(0,this.color[0]);
+            grad.addColorStop(1,this.color[1]);
+            ctx.fillStyle=grad;
             ctx.beginPath();
             ctx.moveTo(0,0);
-            ctx.bezierCurveTo(-5,-25,5,-30,0,-5);
-            ctx.fillStyle=grad;
+            ctx.bezierCurveTo(-8,-35,8,-40,0,-5);
             ctx.fill();
         }
-        ctx.beginPath();
-        ctx.arc(0,0,4*this.depth,0,Math.PI*2);
-        ctx.fillStyle='gold';
-        ctx.fill();
         ctx.restore();
     }
     update(){this.scale+=(this.targetScale-this.scale)*this.bloomSpeed;}
-    draw(ctx){
-        this.drawStem(ctx);
-        this.drawPetals(ctx);
-    }
+    draw(){this.drawStem(); this.drawPetals();}
 }
 
-// Fireflies
+// Firefly class
 class Firefly{
     constructor(){
-        this.x=Math.random()*flowerCanvas.width;
-        this.y=Math.random()*flowerCanvas.height*0.5;
+        this.x=Math.random()*canvas.width;
+        this.y=Math.random()*canvas.height*0.5;
         this.radius=1+Math.random()*3;
+        this.opacity=Math.random()*0.5+0.3;
         this.angle=Math.random()*Math.PI*2;
-        this.speed=0.2+Math.random()*0.6;
-        this.opacity=0.3+Math.random()*0.3;
+        this.speed=0.2+Math.random()*0.4;
     }
-    draw(ctx){
+    draw(){
         ctx.beginPath();
         ctx.arc(this.x,this.y,this.radius,0,Math.PI*2);
         ctx.fillStyle=`rgba(255,247,168,${this.opacity})`;
@@ -341,63 +288,64 @@ class Firefly{
     update(){
         this.x+=Math.cos(this.angle)*this.speed;
         this.y+=Math.sin(this.angle)*this.speed;
-        this.angle+=(Math.random()-0.5)*0.05;
         this.opacity=0.3+0.3*Math.sin(Date.now()/500+this.x);
-        if(this.x<0)this.x=flowerCanvas.width; if(this.x>flowerCanvas.width)this.x=0;
-        if(this.y<0)this.y=flowerCanvas.height; if(this.y>flowerCanvas.height)this.y=0;
     }
 }
 
-// Initialize ultra garden
+// Initialize garden
 let flowers=[],fireflies=[];
 function initGarden(){
     flowers=[];
     const types=['lily','rose','carnation','filler'];
     for(let i=0;i<180;i++){
         let depth=1+Math.random()*2;
-        flowers.push(new Flower(Math.random()*flowerCanvas.width,flowerCanvas.height-50-Math.random()*300, types[Math.floor(Math.random()*types.length)],depth));
+        flowers.push(new Flower(Math.random()*canvas.width,canvas.height-50-Math.random()*250,types[Math.floor(Math.random()*types.length)],depth));
     }
     fireflies=[];
-    for(let i=0;i<80;i++) fireflies.push(new Firefly());
+    for(let i=0;i<60;i++) fireflies.push(new Firefly());
 }
 
-// Animate ultra garden
+// Animate garden
 function animateGarden(){
-    fctx.clearRect(0,0,flowerCanvas.width,flowerCanvas.height);
-    const grad=fctx.createLinearGradient(0,0,0,flowerCanvas.height);
-    grad.addColorStop(0,"#ff7fa5"); grad.addColorStop(0.5,"#ffc3a0"); grad.addColorStop(1,"#fff1d6");
-    fctx.fillStyle=grad; fctx.fillRect(0,0,flowerCanvas.width,flowerCanvas.height);
-    // sort by depth for 3D effect
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    const grad=ctx.createLinearGradient(0,0,0,canvas.height);
+    grad.addColorStop(0,'#ff7fa5'); grad.addColorStop(0.5,'#ffc3a0'); grad.addColorStop(1,'#fff1d6');
+    ctx.fillStyle=grad; ctx.fillRect(0,0,canvas.width,canvas.height);
     flowers.sort((a,b)=>b.depth-a.depth);
-    flowers.forEach(f=>{f.update(); f.draw(fctx);});
-    fireflies.forEach(ff=>{ff.update(); ff.draw(fctx);});
+    flowers.forEach(f=>{f.update(); f.draw();});
+    fireflies.forEach(ff=>{ff.update(); ff.draw();});
     requestAnimationFrame(animateGarden);
 }
 
-// Lets Go button triggers ultra garden
-const letsGoBtn=document.getElementById('goBtn');
-letsGoBtn.onclick=()=>{
-    flowerCanvas.style.display="block";
-    document.querySelector(".ending-text").style.opacity=1;
-    document.getElementById("homeBtn").style.display="block";
+// Lets Go button
+goBtn.onclick=()=>{
+    document.getElementById('carouselMain').style.display='none';
+    document.getElementById('letterPopup').style.display='none';
+    document.getElementById('openLetterBtn').style.display='none';
+    document.getElementById('musicBtn').style.display='none';
+    canvas.style.display='block';
+    document.querySelector('.ending-text').style.opacity=1;
+    document.getElementById('homeBtn').style.display='block';
     initGarden();
     animateGarden();
 };
 
 // Home button
-document.getElementById("homeBtn").onclick=()=>{location.reload();};
+document.getElementById('homeBtn').onclick=()=>{
+    location.reload();
+};
 
 // Resize
 window.addEventListener('resize',()=>{
-    flowerCanvas.width=window.innerWidth;
-    flowerCanvas.height=window.innerHeight;
+    canvas.width=window.innerWidth;
+    canvas.height=window.innerHeight;
 });
 
-// --- YouTube ---
+// YouTube
 let player,playing=false;
 function onYouTubeIframeAPIReady(){player=new YT.Player('ytplayer');}
 const tag=document.createElement('script');tag.src="https://www.youtube.com/iframe_api";document.body.appendChild(tag);
-musicBtn.onclick=()=>{if(!playing){player.playVideo();musicBtn.textContent="⏸ Pause Music";} else{player.pauseVideo();musicBtn.textContent="▶ Play Music";} playing=!playing;}
+musicBtn.onclick=()=>{if(!playing){player.playVideo();musicBtn.textContent="⏸ Pause Music";}else{player.pauseVideo();musicBtn.textContent="▶ Play Music";} playing=!playing;}
 </script>
 </body>
 </html>
