@@ -203,7 +203,7 @@ button:disabled{opacity:.5;cursor:default;}
 
 <script>
 // LETTER
-const part1=`     helloo baby girl kamusta? happy valentines po:) iloveyousomuch honhon kahit muka kang kalaban araw araw hahaha joke lang, btw lilay i want you to know na super proud ako sa efforts mo na ginagawa sa relationship natin — proud ako dahil you are trying very very hard to the point na gusto mo pa malaman kung ano pa ang dapat gawin mo sa relationship natin. i am so proud of you mahal ko sobrang na aappreciate ko lahat ng small and big details na ginagawa mo for "us" 
+const part1=`     helloo baby girl kamusta? happy valentines po:) iloveyousomuch honhon kahit muka kang kalaban araw araw hahaha joke lang, btw lilay i want you to know na super proud ako sa efforts mo na ginagawa mo sa relationship natin — proud ako dahil you are trying very very hard to the point na gusto mo pa malaman kung ano pa ang dapat gawin mo sa relationship natin. i am so proud of you mahal ko sobrang na aappreciate ko lahat ng small and big details na ginagawa mo for "us" 
 glad ako na nag grgrow tayo in different ways minsan sa away, minsan sa pagmamahalan — but that's it mahal ko, ang layo layo na natin. andami na agad natin napagdaanan at lahat ng yon nalagpasan natin dahil mas nangingibabaw ang love natin sa isa't-isa.`;
 
 const part2=`honhon ko, hindi ako magsasawang bumawi at mag promise kasi lahat yon tutupadin ko. kaya don't worry future wifey ko you're more than enough mahal ko, we are more than enough. kaya we need to surpass the limit para ma-handle natin ang situation 
@@ -253,9 +253,9 @@ class Flower{
     }
     getColor(type){
         switch(type){
-            case 'carnation': return ['#ff69b4','#ff1493']; // pink
+            case 'carnation': return ['#ff69b4','#ff1493']; 
             case 'filler': 
-                const colors=[['#ffffff','#ffe1eb'],['#ff4d88','#ffb6c1'],['#ff0000','#ff6666']];
+                const colors=[['#ffffff','#f0f0f0'],['#ff4d88','#ffb6c1'],['#ff0000','#ff6666']];
                 return colors[Math.floor(Math.random()*colors.length)];
             default: return ['#ffc0cb','#ff69b4'];
         }
@@ -321,22 +321,32 @@ class Firefly{
     }
 }
 
-// Bouquet setup
 let flowers=[],fireflies=[],stars=[];
 function initBouquet(){
     flowers=[];
     const centerX=canvas.width/2, centerY=canvas.height/2+50;
 
-    // 3 big carnations
+    // Middle 3 big pink carnations
     flowers.push(new Flower(centerX-60,centerY,'carnation',1.2));
     flowers.push(new Flower(centerX,centerY,'carnation',1.4));
     flowers.push(new Flower(centerX+60,centerY,'carnation',1.2));
 
-    // colored fillers V-shape (red, pink, white only)
-    for(let i=0;i<12;i++){
-        let dx=(Math.random()*200-100)*(i/12);
-        let dy=Math.random()*60 + Math.abs(dx)/1.5;
-        flowers.push(new Flower(centerX+dx,centerY+dy,'filler',0.7));
+    // Surrounding white carnations in front
+    for(let i=0;i<18;i++){
+        let angle=Math.random()*Math.PI*2;
+        let radius=50+Math.random()*40;
+        let dx=Math.cos(angle)*radius;
+        let dy=Math.sin(angle)*radius + 10;
+        flowers.push(new Flower(centerX+dx,centerY+dy,'filler',0.8));
+        flowers[flowers.length-1].color=['#ffffff','#f0f0f0']; // force white filler
+    }
+
+    // V-shape red flowers below middle
+    for(let i=-4;i<=4;i++){
+        let dx=i*25;
+        let dy=60 + Math.abs(i)*10;
+        flowers.push(new Flower(centerX+dx,centerY+dy,'filler',0.9));
+        flowers[flowers.length-1].color=['#ff0000','#ff6666']; // red V
     }
 
     fireflies=[];
@@ -373,9 +383,9 @@ function animateBouquet(){
 
     drawStars();
 
-    // Ribbon in the middle
+    // Ribbon in the middle of V
     ctx.save();
-    ctx.translate(canvas.width/2,canvas.height/2+100);
+    ctx.translate(canvas.width/2,canvas.height/2+105);
     let gradRibbon=ctx.createLinearGradient(-60,0,60,60);
     gradRibbon.addColorStop(0,'#e60073');
     gradRibbon.addColorStop(0.5,'#ff4d88');
