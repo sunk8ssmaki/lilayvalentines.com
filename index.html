@@ -102,7 +102,7 @@ button{
   cursor:pointer;
   box-shadow:0 0 20px rgba(255,100,150,.5);
   position:relative;
-  z-index:15; /* make sure buttons are on top */
+  z-index:15;
 }
 button:hover{transform:scale(1.06);}
 button:disabled{opacity:.5;cursor:default;}
@@ -117,7 +117,7 @@ button:disabled{opacity:.5;cursor:default;}
   background:linear-gradient(to bottom right, #ffe1eb, #ffd1e0);
   border-radius:24px;
   padding:26px;
-  z-index:20; /* make sure letter is above canvas */
+  z-index:20;
   transition:.4s;
   box-shadow:0 0 50px rgba(255,182,193,0.5);
 }
@@ -131,7 +131,7 @@ button:disabled{opacity:.5;cursor:default;}
   top:0;left:0;
   width:100%;
   height:100%;
-  z-index:5; /* behind buttons and letter */
+  z-index:5;
   background:#0b0012;
 }
 .ending-text{
@@ -213,7 +213,7 @@ let idx=0,current=part1;
 function type(){ 
   if(idx<current.length){ 
     typedText.textContent+=current[idx++]; 
-    setTimeout(type,60); // slower typing
+    setTimeout(type,60);
   } 
 }
 
@@ -253,8 +253,10 @@ class Flower{
     }
     getColor(type){
         switch(type){
-            case 'carnation': return ['#ff69b4','#ff1493'];
-            case 'filler': return ['#ffffff','#ffe1eb'];
+            case 'carnation': return ['#ff69b4','#ff1493']; // pink
+            case 'filler': 
+                const colors=[['#ffffff','#ffe1eb'],['#ff4d88','#ffb6c1'],['#ff0000','#ff6666']];
+                return colors[Math.floor(Math.random()*colors.length)];
             default: return ['#ffc0cb','#ff69b4'];
         }
     }
@@ -282,7 +284,6 @@ class Flower{
             ctx.beginPath();
             ctx.moveTo(0,0);
             ctx.bezierCurveTo(-20,-50,20,-55,0,-12);
-            // add inner lines
             for(let l=0;l<3;l++){
                 ctx.moveTo(0,-12);
                 ctx.lineTo(Math.random()*10-5,-20-l*10);
@@ -331,10 +332,10 @@ function initBouquet(){
     flowers.push(new Flower(centerX,centerY,'carnation',1.4));
     flowers.push(new Flower(centerX+60,centerY,'carnation',1.2));
 
-    // white fillers
-    for(let i=0;i<10;i++){
-        let dx=Math.random()*180-90;
-        let dy=Math.random()*50;
+    // colored fillers V-shape (red, pink, white only)
+    for(let i=0;i<12;i++){
+        let dx=(Math.random()*200-100)*(i/12);
+        let dy=Math.random()*60 + Math.abs(dx)/1.5;
         flowers.push(new Flower(centerX+dx,centerY+dy,'filler',0.7));
     }
 
@@ -370,9 +371,9 @@ function drawStars(){
 function animateBouquet(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
 
-    drawStars(); // soft twinkling stars
+    drawStars();
 
-    // Bouquet ribbon
+    // Ribbon in the middle
     ctx.save();
     ctx.translate(canvas.width/2,canvas.height/2+100);
     let gradRibbon=ctx.createLinearGradient(-60,0,60,60);
@@ -389,6 +390,7 @@ function animateBouquet(){
     flowers.sort((a,b)=>b.depth-a.depth);
     flowers.forEach(f=>{f.update(); f.draw();});
     fireflies.forEach(ff=>{ff.update(); ff.draw();});
+
     requestAnimationFrame(animateBouquet);
 }
 
