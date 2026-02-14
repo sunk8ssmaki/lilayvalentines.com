@@ -234,223 +234,223 @@ const items=slide.querySelectorAll('.item');
 items.forEach((el,i)=>el.classList.remove('center'));
 items[1].classList.add('center');
 
-// Bouquet + stars + fireflies
-const canvas=document.getElementById('flowerCanvas');
-const ctx=canvas.getContext('2d');
-canvas.width=window.innerWidth;
-canvas.height=window.innerHeight;
+// FLOWERS + PREMIUM BOUQUET
+const canvas = document.getElementById('flowerCanvas');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
-class Flower{
-    constructor(x,y,type='carnation',depth=1){
-        this.x=x; this.y=y; this.depth=depth;
-        this.scale=0; this.targetScale=1.2;
-        this.type=type;
-        this.rotation=Math.random()*Math.PI*2;
-        this.petalCount=12+Math.floor(Math.random()*4);
-        this.stemHeight=60+Math.random()*20;
-        this.color=this.getColor(type);
-        this.bloomSpeed=0.02+Math.random()*0.01;
+class Flower {
+  constructor(x, y, type='carnation', depth=1){
+    this.x = x;
+    this.y = y;
+    this.depth = depth;
+    this.scale = 0;
+    this.targetScale = 1.2;
+    this.type = type;
+    this.rotation = Math.random()*Math.PI*2;
+    this.petalCount = 12 + Math.floor(Math.random()*4);
+    this.stemHeight = 60 + Math.random()*20;
+    this.color = this.getColor(type);
+    this.bloomSpeed = 0.02 + Math.random()*0.01;
+  }
+  getColor(type){
+    switch(type){
+      case 'carnation': return ['#ff69b4','#ff1493']; 
+      case 'filler': 
+        const colors=[['#ffffff','#f0f0f0'],['#ff4d88','#ffb6c1'],['#ff0000','#ff6666']];
+        return colors[Math.floor(Math.random()*colors.length)];
+      default: return ['#ffc0cb','#ff69b4'];
     }
-    getColor(type){
-        switch(type){
-            case 'carnation': return ['#ff69b4','#ff1493']; 
-            case 'filler': 
-                const colors=[['#ffffff','#f0f0f0'],['#ff4d88','#ffb6c1'],['#ff0000','#ff6666']];
-                return colors[Math.floor(Math.random()*colors.length)];
-            default: return ['#ffc0cb','#ff69b4'];
-        }
-    }
-    drawStem(){
-        ctx.strokeStyle='#228B22';
-        ctx.lineWidth=2*this.depth;
-        ctx.beginPath();
-        ctx.moveTo(this.x,this.y);
-        ctx.lineTo(this.x,this.y+this.stemHeight*this.depth);
-        ctx.stroke();
-    }
-    drawPetals(){
-        ctx.save();
-        ctx.translate(this.x,this.y);
-        ctx.rotate(this.rotation);
-        ctx.scale(this.scale,this.scale);
-        for(let i=0;i<this.petalCount;i++){
-            ctx.rotate((2*Math.PI)/this.petalCount);
-            let grad=ctx.createLinearGradient(0,0,0,-60);
-            grad.addColorStop(0,this.color[0]);
-            grad.addColorStop(1,this.color[1]);
-            ctx.fillStyle=grad;
-            ctx.strokeStyle='#ff69b4';
-            ctx.lineWidth=0.8;
-            ctx.beginPath();
-            ctx.moveTo(0,0);
-            ctx.bezierCurveTo(-20,-50,20,-55,0,-12);
-            for(let l=0;l<3;l++){
-                ctx.moveTo(0,-12);
-                ctx.lineTo(Math.random()*10-5,-20-l*10);
-            }
-            ctx.fill();
-            ctx.stroke();
-        }
-        ctx.restore();
-    }
-    update(){this.scale+=(this.targetScale-this.scale)*this.bloomSpeed;}
-    draw(){this.drawStem(); this.drawPetals();}
-}
-
-class Firefly{
-    constructor(){
-        this.x=window.innerWidth/2 + Math.random()*400-200;
-        this.y=window.innerHeight/2 + Math.random()*400-200;
-        this.radius=1+Math.random()*2;
-        this.opacity=Math.random()*0.5+0.3;
-        this.angle=Math.random()*Math.PI*2;
-        this.speed=0.2+Math.random()*0.2;
-    }
-    draw(){
-        ctx.beginPath();
-        ctx.arc(this.x,this.y,this.radius,0,Math.PI*2);
-        ctx.fillStyle=`rgba(255,247,168,${this.opacity})`;
-        ctx.shadowColor=`rgba(255,247,168,${this.opacity})`;
-        ctx.shadowBlur=8;
-        ctx.fill();
-    }
-    update(){
-        this.x+=Math.cos(this.angle)*this.speed;
-        this.y+=Math.sin(this.angle)*this.speed;
-        this.opacity=0.3+0.3*Math.sin(Date.now()/600+this.x);
-    }
-}
-
-let flowers=[],fireflies=[],stars=[];
-function initBouquet(){
-    flowers=[];
-    const centerX=canvas.width/2, centerY=canvas.height/2+50;
-
-    // Middle 3 big pink carnations
-    flowers.push(new Flower(centerX-60,centerY,'carnation',1.2));
-    flowers.push(new Flower(centerX,centerY,'carnation',1.4));
-    flowers.push(new Flower(centerX+60,centerY,'carnation',1.2));
-
-    // Surrounding white carnations in front
-    for(let i=0;i<18;i++){
-        let angle=Math.random()*Math.PI*2;
-        let radius=50+Math.random()*40;
-        let dx=Math.cos(angle)*radius;
-        let dy=Math.sin(angle)*radius + 10;
-        flowers.push(new Flower(centerX+dx,centerY+dy,'filler',0.8));
-        flowers[flowers.length-1].color=['#ffffff','#f0f0f0']; // force white filler
-    }
-
-    // Fireflies
-    fireflies=[];
-    for(let i=0;i<35;i++) fireflies.push(new Firefly());
-
-    // Stars
-    stars=[];
-    for(let i=0;i<20;i++){ 
-        stars.push({
-            x:Math.random()*canvas.width,
-            y:Math.random()*canvas.height*0.5,
-            radius:1+Math.random()*1.5,
-            baseOpacity:0.3+Math.random()*0.3,
-            opacity:0,
-            speed:0.002+Math.random()*0.003,
-            color:'rgba(255,200,100,'
-        });
-    }
-}
-
-// DRAW BIGGER V-SHAPE CONTAINER WITH LINES
-function drawVContainer(){
+  }
+  drawStem(){
+    ctx.strokeStyle='#228B22';
+    ctx.lineWidth=2*this.depth;
+    ctx.beginPath();
+    ctx.moveTo(this.x,this.y);
+    ctx.lineTo(this.x,this.y+this.stemHeight*this.depth);
+    ctx.stroke();
+  }
+  drawPetals(){
     ctx.save();
-    ctx.translate(canvas.width/2, canvas.height/2 + 130);
-
-    const vWidth = 250;   // wider
-    const vHeight = 200;  // taller
-
-    // Main V shape
-    ctx.fillStyle = '#ff0000';
-    ctx.beginPath();
-    ctx.moveTo(-vWidth/2, 0);        // left top
-    ctx.lineTo(0, vHeight);          // bottom
-    ctx.lineTo(vWidth/2, 0);         // right top
-    ctx.closePath();
-    ctx.fill();
-
-    // Ribbon with gradient
-    let gradRibbon = ctx.createLinearGradient(-vWidth/2 + 30, 0, vWidth/2 - 30, vHeight/2);
-    gradRibbon.addColorStop(0, '#e60073');
-    gradRibbon.addColorStop(0.5, '#ff4d88');
-    gradRibbon.addColorStop(1, '#e60073');
-    ctx.fillStyle = gradRibbon;
-    ctx.beginPath();
-    ctx.moveTo(-vWidth/2 + 30, vHeight/4);
-    ctx.bezierCurveTo(-vWidth/4, vHeight * 0.7, vWidth/4, vHeight * 0.7, vWidth/2 - 30, vHeight/4);
-    ctx.lineTo(vWidth/2 - 30, vHeight/4 + 20);
-    ctx.bezierCurveTo(vWidth/4, vHeight * 0.85, -vWidth/4, vHeight * 0.85, -vWidth/2 + 30, vHeight/4 + 20);
-    ctx.closePath();
-    ctx.fill();
-
-    // Top lines to show flowers are inside
-    ctx.strokeStyle = 'rgba(255,255,255,0.2)';
-    ctx.lineWidth = 2;
-    for (let i = 1; i <= 5; i++) {
-        ctx.beginPath();
-        ctx.moveTo(-vWidth/2 + i*20, 0);
-        ctx.lineTo(0, vHeight - i*20);
-        ctx.lineTo(vWidth/2 - i*20, 0);
-        ctx.stroke();
+    ctx.translate(this.x,this.y);
+    ctx.rotate(this.rotation);
+    ctx.scale(this.scale,this.scale);
+    for(let i=0;i<this.petalCount;i++){
+      ctx.rotate((2*Math.PI)/this.petalCount);
+      let grad=ctx.createLinearGradient(0,0,0,-60);
+      grad.addColorStop(0,this.color[0]);
+      grad.addColorStop(1,this.color[1]);
+      ctx.fillStyle=grad;
+      ctx.strokeStyle='#ff69b4';
+      ctx.lineWidth=0.8;
+      ctx.beginPath();
+      ctx.moveTo(0,0);
+      ctx.bezierCurveTo(-20,-50,20,-55,0,-12);
+      for(let l=0;l<3;l++){
+        ctx.moveTo(0,-12);
+        ctx.lineTo(Math.random()*10-5,-20-l*10);
+      }
+      ctx.fill();
+      ctx.stroke();
     }
-
     ctx.restore();
+  }
+  update(){ this.scale += (this.targetScale-this.scale)*this.bloomSpeed; }
+  draw(){ this.drawStem(); this.drawPetals(); }
+}
+
+class Firefly {
+  constructor(){
+    this.x = canvas.width/2 + Math.random()*400-200;
+    this.y = canvas.height/2 + Math.random()*400-200 - 50;
+    this.radius = 1+Math.random()*2;
+    this.opacity = Math.random()*0.5+0.3;
+    this.angle = Math.random()*Math.PI*2;
+    this.speed = 0.2+Math.random()*0.2;
+  }
+  draw(){
+    ctx.beginPath();
+    ctx.arc(this.x,this.y,this.radius,0,Math.PI*2);
+    ctx.fillStyle = `rgba(255,247,168,${this.opacity})`;
+    ctx.shadowColor = `rgba(255,247,168,${this.opacity})`;
+    ctx.shadowBlur = 8;
+    ctx.fill();
+  }
+  update(){
+    this.x += Math.cos(this.angle)*this.speed;
+    this.y += Math.sin(this.angle)*this.speed;
+    this.opacity = 0.3+0.3*Math.sin(Date.now()/600+this.x);
+  }
+}
+
+let flowers=[], fireflies=[], stars=[];
+function initBouquet(){
+  flowers = [];
+  const centerX = canvas.width/2;
+  const centerY = canvas.height/2 - 80;
+
+  flowers.push(new Flower(centerX-70, centerY, 'carnation', 1.2));
+  flowers.push(new Flower(centerX, centerY, 'carnation', 1.4));
+  flowers.push(new Flower(centerX+70, centerY, 'carnation', 1.2));
+
+  for(let i=0;i<18;i++){
+    let angle = Math.random()*Math.PI*2;
+    let radius = 50+Math.random()*40;
+    let dx = Math.cos(angle)*radius;
+    let dy = Math.sin(angle)*radius;
+    flowers.push(new Flower(centerX+dx, centerY+dy, 'filler', 0.8));
+    flowers[flowers.length-1].color = ['#ffffff','#f0f0f0'];
+  }
+
+  fireflies = [];
+  for(let i=0;i<35;i++) fireflies.push(new Firefly());
+
+  stars=[];
+  for(let i=0;i<20;i++){
+    stars.push({
+      x:Math.random()*canvas.width,
+      y:Math.random()*canvas.height*0.5,
+      radius:1+Math.random()*1.5,
+      baseOpacity:0.3+Math.random()*0.3,
+      opacity:0,
+      speed:0.002+Math.random()*0.003,
+      color:'rgba(255,200,100,'
+    });
+  }
+}
+
+function drawVContainer(){
+  ctx.save();
+  ctx.translate(canvas.width/2, canvas.height/2 - 50);
+
+  const vWidth = 300;
+  const vHeight = 250;
+
+  let grad = ctx.createLinearGradient(0,0,0,vHeight);
+  grad.addColorStop(0,'#ff85a2');
+  grad.addColorStop(0.5,'#ff4d88');
+  grad.addColorStop(1,'#e60073');
+
+  ctx.fillStyle = grad;
+  ctx.beginPath();
+  ctx.moveTo(-vWidth/2,0);
+  ctx.lineTo(0,vHeight);
+  ctx.lineTo(vWidth/2,0);
+  ctx.closePath();
+  ctx.fill();
+
+  ctx.strokeStyle='rgba(255,255,255,0.25)';
+  ctx.lineWidth=3;
+  ctx.beginPath();
+  ctx.moveTo(-vWidth/2,0);
+  ctx.lineTo(0,vHeight);
+  ctx.lineTo(vWidth/2,0);
+  ctx.stroke();
+
+  for(let i=1;i<=6;i++){
+    ctx.strokeStyle = `rgba(255,255,255,${0.08+i*0.02})`;
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(-vWidth/2 + i*30, 0);
+    ctx.lineTo(0, vHeight - i*20);
+    ctx.lineTo(vWidth/2 - i*30, 0);
+    ctx.stroke();
+  }
+
+  ctx.restore();
 }
 
 function drawStars(){
-    stars.forEach(s=>{
-        s.opacity=s.baseOpacity + 0.2*Math.sin(Date.now()*s.speed);
-        ctx.beginPath();
-        ctx.arc(s.x,s.y,s.radius,0,Math.PI*2);
-        ctx.fillStyle=s.color + s.opacity + ')';
-        ctx.shadowColor=s.color + s.opacity + ')';
-        ctx.shadowBlur=6;
-        ctx.fill();
-    });
+  stars.forEach(s=>{
+    s.opacity=s.baseOpacity + 0.2*Math.sin(Date.now()*s.speed);
+    ctx.beginPath();
+    ctx.arc(s.x,s.y,s.radius,0,Math.PI*2);
+    ctx.fillStyle=s.color+s.opacity+')';
+    ctx.shadowColor=s.color+s.opacity+')';
+    ctx.shadowBlur=6;
+    ctx.fill();
+  });
 }
 
 function animateBouquet(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.clearRect(0,0,canvas.width,canvas.height);
 
-    drawStars();
-    drawVContainer();
+  drawStars();
+  drawVContainer();
 
-    flowers.sort((a,b)=>b.depth-a.depth);
-    flowers.forEach(f=>{f.update(); f.draw();});
-    fireflies.forEach(ff=>{ff.update(); ff.draw();});
+  flowers.sort((a,b)=>b.depth-a.depth);
+  flowers.forEach(f=>{f.update(); f.draw();});
+  fireflies.forEach(ff=>{ff.update(); ff.draw();});
 
-    requestAnimationFrame(animateBouquet);
+  requestAnimationFrame(animateBouquet);
 }
 
-// Lets Go button
 goBtn.onclick=()=>{
-    document.getElementById('carouselMain').style.display='none';
-    document.getElementById('letterPopup').style.display='none';
-    document.getElementById('openLetterBtn').style.display='none';
-    document.getElementById('musicBtn').style.display='none';
+  document.getElementById('carouselMain').style.display='none';
+  document.getElementById('letterPopup').style.display='none';
+  document.getElementById('openLetterBtn').style.display='none';
+  document.getElementById('musicBtn').style.display='none';
 
-    canvas.style.display='block';
-    endingText.style.display='block';
-    homeBtn.style.display='block';
-    initBouquet();
-    animateBouquet();
+  canvas.style.display='block';
+  endingText.style.display='block';
+  homeBtn.style.display='block';
+  initBouquet();
+  animateBouquet();
 };
 
-// Music
-const ytplayer=document.getElementById('ytplayer');
-let musicPlaying=false;
-musicBtn.onclick=()=>{
-    if(!musicPlaying){ytplayer.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}','*'); musicPlaying=true; musicBtn.textContent='⏸ Pause Music';}
-    else{ytplayer.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}','*'); musicPlaying=false; musicBtn.textContent='▶ Play Music';}
-};
+document.getElementById('homeBtn').onclick=()=>{location.reload();};
+
+window.addEventListener('resize',()=>{
+    canvas.width=window.innerWidth;
+    canvas.height=window.innerHeight;
+});
+
+// YouTube
+let player,playing=false;
+function onYouTubeIframeAPIReady(){player=new YT.Player('ytplayer');}
+const tag=document.createElement('script');tag.src="https://www.youtube.com/iframe_api";document.body.appendChild(tag);
+musicBtn.onclick=()=>{if(!playing){player.playVideo();musicBtn.textContent="⏸ Pause Music";}else{player.pauseVideo();musicBtn.textContent="▶ Play Music";}playing=!playing;};
 </script>
 
 </body>
