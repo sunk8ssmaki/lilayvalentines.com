@@ -1,326 +1,290 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Valentine</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentine Dream Carousel</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
+*{box-sizing:border-box;margin:0;padding:0;}
 body{
-  margin:0;
-  font-family:Poppins, sans-serif;
-  background:#111;
-  color:white;
-  overflow-x:hidden;
-}
-
-/* ===== CAROUSEL PAGE ===== */
-#carouselPage{
+  font-family:'Quicksand',sans-serif;
+  background:#0b0012;
   min-height:100vh;
   display:flex;
   flex-direction:column;
   align-items:center;
-  justify-content:center;
-  gap:20px;
+  color:white;
+  overflow-x:hidden;
+  position:relative;
 }
 
-.carousel{
-  width:340px;
-  height:600px;
-  border-radius:20px;
+/* TITLE */
+.title-container{
+  position:relative;
+  margin:30px 0 15px;
+  text-align:center;
+  z-index:10;
+}
+h1{
+  font-family:'Great Vibes',cursive;
+  font-size:clamp(2.4rem,5vw,3.6rem);
+  color:#ffb6c1;
+  text-shadow:0 0 20px rgba(255,182,193,.9),0 0 40px rgba(214,52,105,.5);
+  position:relative;
+  z-index:10;
+}
+.title-decoration{
+  position:absolute;
+  width:12px;height:12px;
+  background:pink;
+  border-radius:50%;
+}
+.title-decoration:nth-child(1){left:-20px;top:-10px;}
+.title-decoration:nth-child(2){right:-15px;top:5px;}
+.title-decoration:nth-child(3){left:10%;top:-15px;background:#ff85a2;}
+.title-decoration:nth-child(4){right:12%;top:-12px;background:#ffccdd;}
+
+/* CAROUSEL */
+.carousel-container{
+  z-index:2;
+  backdrop-filter:blur(14px);
+  background:rgba(255,255,255,.08);
+  border-radius:28px;
+  padding:22px;
+  box-shadow:0 0 40px rgba(255,120,160,.25);
+  width:95%;
+  max-width:950px;
   overflow:hidden;
-  box-shadow:0 0 40px #ff4da6aa;
+  position:relative;
+  display:flex;
+  justify-content:center;
+}
+.carousel-slide{
+  display:flex;
+  gap:24px;
+}
+.carousel-slide .item{
+  width:240px;height:360px;
+  border-radius:24px;
+  overflow:hidden;
+  background:linear-gradient(45deg, #fff, #ffe1e6);
+  box-shadow:0 12px 24px rgba(214,52,105,0.3);
+  transform:scale(0.85);
+  opacity:0.6;
+  position:relative;
+}
+.carousel-slide .item.center{
+  transform:scale(1);
+  opacity:1;
+  border:5px solid #ff85a2;
+  box-shadow:0 16px 36px rgba(214,52,105,0.5);
+  z-index:2;
+}
+.carousel-slide video{
+  width:100%;height:100%;
+  object-fit:cover;
+  border-radius:20px;
 }
 
-.carousel iframe{
+/* BUTTONS */
+button{
+  background:linear-gradient(45deg,#ff7fa5,#ff4d88);
+  border:none;
+  padding:14px 26px;
+  border-radius:18px;
+  color:white;
+  font-weight:600;
+  font-size:1rem;
+  margin:14px 8px;
+  cursor:pointer;
+  box-shadow:0 0 20px rgba(255,100,150,.5);
+  position:relative;
+  z-index:15;
+}
+button:hover{transform:scale(1.06);}
+button:disabled{opacity:.5;cursor:default;}
+
+/* LETTER */
+.letter-popup{
+  position:fixed;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%) scale(0);
+  width:95%;max-width:560px;max-height:80vh;
+  overflow:auto;
+  background:linear-gradient(to bottom right, #ffe1eb, #ffd1e0);
+  border-radius:24px;
+  padding:26px;
+  z-index:20;
+  transition:.4s;
+  box-shadow:0 0 50px rgba(255,182,193,0.5);
+}
+.letter-popup.open{transform:translate(-50%,-50%) scale(1);}
+.letter-text{white-space:pre-wrap;line-height:1.8;text-align:justify;color:#ff69b4;font-size:1rem; margin-top:20px;}
+
+/* BOUQUET CANVAS */
+#flowerCanvas{
+  display:none;
+  position:fixed;
+  top:0;left:0;
   width:100%;
   height:100%;
-  border:0;
+  z-index:5;
+  background:#0b0012;
 }
-
-button{
-  padding:14px 28px;
-  border-radius:30px;
-  border:none;
-  font-size:16px;
-  cursor:pointer;
-  background:linear-gradient(45deg,#ff4da6,#ff8ad4);
-  color:white;
-  box-shadow:0 0 20px #ff4da6aa;
-}
-
-/* ===== FLOWER PAGE ===== */
-#flowerPage{
+.ending-text{
   display:none;
-  min-height:100vh;
-  background:radial-gradient(circle at bottom,#000 0%,#050505 60%,#000 100%);
-  position:relative;
-  overflow:hidden;
+  font-size:2rem;
+  color:#ff4d88;
+  font-family:'Great Vibes',cursive;
+  text-align:right;
+  position:fixed;
+  top:50%;
+  right:5%;
+  transform:translateY(-50%);
+  z-index:15;
+  animation:fadeMove 3s ease-in-out infinite alternate;
 }
-
-/* stars */
-.star{
-  position:absolute;
-  width:3px;height:3px;
-  border-radius:50%;
-  background:radial-gradient(circle,yellow,orange);
-  opacity:.4;
-  animation:twinkle 4s infinite;
+@keyframes fadeMove{
+  0%{opacity:0.6; transform:translateY(-50%) translateX(0);}
+  100%{opacity:1; transform:translateY(-50%) translateX(-10px);}
 }
-@keyframes twinkle{
-  0%,100%{opacity:.2; transform:scale(.8)}
-  50%{opacity:.9; transform:scale(1.6)}
-}
-
-/* letter */
-.letter{
-  width:80%;
-  max-width:520px;
-  margin:30px auto 0;
-  padding:26px;
-  border-radius:20px;
-  background:linear-gradient(135deg,#ffd6ec,#ffe6f5);
-  color:#c2185b;
-  box-shadow:0 0 30px #ff4da655;
-  line-height:1.7;
-  font-size:15px;
-}
-
-/* bouquet area */
-.bouquet{
-  position:relative;
-  width:100%;
-  height:520px;
-  margin-top:10px;
-}
-
-/* ===== STEMS ===== */
-.stem{
-  position:absolute;
-  bottom:0;
-  width:4px;
-  background:linear-gradient(#2e7d32,#1b5e20);
-  border-radius:3px;
-  box-shadow:0 0 8px #66bb6a66;
-}
-.stem::after{
-  content:"";
-  position:absolute;
-  width:6px;height:6px;
-  background:#2e7d32;
-  border-radius:50%;
-  left:-1px;
-  top:40%;
-}
-
-/* ===== FLOWERS ===== */
-.flower{
-  position:absolute;
-  width:150px;
-  height:150px;
-  filter:drop-shadow(0 0 18px rgba(255,120,170,.45));
-  animation:bloom 3.5s ease forwards;
-}
-@keyframes bloom{
-  from{transform:scale(.1); opacity:0}
-  to{transform:scale(1); opacity:1}
-}
-
-.petal{
-  position:absolute;
-  width:70px;
-  height:110px;
-  border-radius:60% 60% 50% 50%;
-  transform-origin:bottom center;
-  overflow:hidden;
-}
-
-/* vein dust lines */
-.petal::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:
-    repeating-linear-gradient(
-      80deg,
-      rgba(255,255,255,.0) 0px,
-      rgba(255,255,255,.0) 6px,
-      rgba(255,255,255,.25) 7px,
-      rgba(255,255,255,.0) 9px
-    );
-  opacity:.35;
-  mix-blend-mode:overlay;
-}
-
-/* fillers */
-.filler{
-  position:absolute;
-  width:22px;height:22px;
-  border-radius:50%;
-  background:white;
-  box-shadow:0 0 10px #fff, 0 0 18px #fff8;
-}
-
-/* glow pulse */
-.glow{
-  position:absolute;
-  inset:-20px;
-  border-radius:50%;
-  background:radial-gradient(circle,rgba(255,180,210,.35),transparent 70%);
-  animation:pulse 3s infinite;
-}
-@keyframes pulse{
-  0%,100%{opacity:.4; transform:scale(.9)}
-  50%{opacity:.9; transform:scale(1.15)}
-}
-
-/* cursive headline */
-.headline{
-  text-align:center;
-  font-family:"Great Vibes",cursive;
-  font-size:44px;
-  margin-top:10px;
-  color:#ff9ecb;
-  text-shadow:0 0 14px #ff4da6,0 0 28px #ff4da655;
-  animation:fadeText 4s infinite;
-}
-@keyframes fadeText{
-  0%,100%{opacity:.7}
-  50%{opacity:1}
-}
-
-.homeBtn{
-  display:block;
-  margin:20px auto 40px;
-}
-
+#homeBtn{display:none;position:fixed;top:5%;right:5%;z-index:15;}
 </style>
 </head>
 <body>
 
-<!-- ===== CAROUSEL ===== -->
-<div id="carouselPage">
-  <h2>Happy Valentine</h2>
-
-  <div class="carousel">
-    <!-- keep your video ref -->
-    <iframe src="https://www.youtube.com/embed/E7Aif6vPMhU"></iframe>
-  </div>
-
-  <button onclick="openFlowers()">Let's Go</button>
+<div class="title-container">
+  <h1>Happy Valentines Lilay</h1>
+  <div class="title-decoration"></div>
+  <div class="title-decoration"></div>
+  <div class="title-decoration"></div>
+  <div class="title-decoration"></div>
 </div>
 
-<!-- ===== FLOWER PAGE ===== -->
-<div id="flowerPage">
-
-  <div class="headline">mariz will be my forever valentine</div>
-
-  <div class="letter">
-    <b> For my pretty lilay </b><br><br>
-    Happy Valentine’s Day —  
-    Every moment with you feels warm, rare, and real.  
-    If I could, then I would choose you again and again —  
-    in every timeline, every version, every chance.  
-    You are my favorite feeling.
+<div class="carousel-container" id="carouselMain">
+  <div class="carousel-slide" id="carouselSlide">
+    <div class="item">
+      <video src="00cc6afcd52ac41a63c01ccda9e7ffa4.mp4" autoplay loop muted></video>
+    </div>
+    <div class="item center">
+      <video src="Recording 2026-01-06 140951.mp4" autoplay loop muted></video>
+    </div>
+    <div class="item">
+      <video src="00cc6afcd52ac41a63c01ccda9e7ffa4.mp4" autoplay loop muted></video>
+    </div>
   </div>
-
-  <div class="bouquet" id="bouquet"></div>
-
-  <button class="homeBtn" onclick="goHome()">Home</button>
 </div>
+
+<button id="openLetterBtn">Open Letter</button>
+<button id="musicBtn">▶ Play Music</button>
+
+<div class="letter-popup" id="letterPopup">
+<h3 style="color:#ff69b4;">  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to my pretty lilay ❤️
+</h3>
+<div id="typedText" class="letter-text"></div>
+<button id="nextBtn">Next</button>
+<button id="goBtn" disabled>Let's go!</button>
+<button onclick="letterPopup.classList.remove('open')">Close</button>
+</div>
+
+<div style="position:fixed;width:0;height:0;overflow:hidden">
+<iframe id="ytplayer" src="https://www.youtube.com/embed/E7Aif6vPMhU?enablejsapi=1" allow="autoplay"></iframe>
+</div>
+
+<canvas id="flowerCanvas"></canvas>
+<div class="ending-text" id="endingText">if i could, then i would</div>
+<button id="homeBtn">🏠 Home</button>
 
 <script>
-function openFlowers(){
-  carouselPage.style.display="none";
-  flowerPage.style.display="block";
+// LETTER (UNCHANGED)
+const part1=`     helloo baby girl kamusta? happy valentines po:) iloveyousomuch honhon kahit muka kang kalaban araw araw hahaha joke lang...`;
+const part2=`honhon ko, hindi ako magsasawang bumawi at mag promise kasi lahat yon tutupadin ko...`;
+
+let idx=0,current=part1;
+function type(){ if(idx<current.length){ typedText.textContent+=current[idx++]; setTimeout(type,60);} }
+
+openLetterBtn.onclick=()=>{letterPopup.classList.add("open"); typedText.textContent=""; idx=0; current=part1; nextBtn.style.display="inline-block"; goBtn.style.display="inline-block"; goBtn.disabled=true; type();};
+nextBtn.onclick=()=>{typedText.textContent=""; idx=0; current=part2; nextBtn.style.display="none"; goBtn.disabled=false; type();};
+
+// CANVAS
+const canvas=document.getElementById('flowerCanvas');
+const ctx=canvas.getContext('2d');
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+/* ✅ ONLY UPDATED PART — MANY COLORS + WHITE FILLERS */
+class Flower{
+constructor(x,y,type='carnation',depth=1){
+this.x=x; this.y=y; this.depth=depth;
+this.scale=0; this.targetScale=1.2;
+this.type=type;
+this.rotation=Math.random()*Math.PI*2;
+this.petalCount=12+Math.floor(Math.random()*4);
+this.color=this.getColor(type);
+this.bloomSpeed=0.02+Math.random()*0.01;
 }
 
-function goHome(){
-  flowerPage.style.display="none";
-  carouselPage.style.display="flex";
-}
-
-/* stars */
-for(let i=0;i<40;i++){
-  const s=document.createElement("div");
-  s.className="star";
-  s.style.left=Math.random()*100+"%";
-  s.style.top=Math.random()*100+"%";
-  s.style.animationDelay=Math.random()*4+"s";
-  flowerPage.appendChild(s);
-}
-
-/* ===== FLOWER MATH GENERATOR ===== */
-function makeFlower(x,y,color){
-  const f=document.createElement("div");
-  f.className="flower";
-  f.style.left=x+"px";
-  f.style.top=y+"px";
-
-  const glow=document.createElement("div");
-  glow.className="glow";
-  f.appendChild(glow);
-
-  const petalCount=18;
-  for(let i=0;i<petalCount;i++){
-    const p=document.createElement("div");
-    p.className="petal";
-
-    const angle=i*(360/petalCount);
-    p.style.transform=`translate(-50%,-100%) rotate(${angle}deg)`;
-
-    p.style.background=
-      `radial-gradient(circle at 50% 30%, #fff, ${color} 45%, #b0004a 90%)`;
-
-    p.style.left="50%";
-    p.style.top="50%";
-
-    f.appendChild(p);
-  }
-
-  /* white fillers around */
-  for(let i=0;i<6;i++){
-    const fill=document.createElement("div");
-    fill.className="filler";
-    const a=i*(Math.PI*2/6);
-    fill.style.left=75+Math.cos(a)*70+"px";
-    fill.style.top=75+Math.sin(a)*70+"px";
-    f.appendChild(fill);
-  }
-
-  bouquet.appendChild(f);
-}
-
-/* stems V aligned */
-function makeStem(x,height,tilt){
-  const s=document.createElement("div");
-  s.className="stem";
-  s.style.left=x+"px";
-  s.style.height=height+"px";
-  s.style.transform=`rotate(${tilt}deg)`;
-  bouquet.appendChild(s);
-}
-
-/* heart layout positions */
-const positions=[
-  [260,120],[200,160],[320,160],
-  [170,220],[350,220],
-  [200,290],[320,290]
+getColor(type){
+const many=[
+['#ff69b4','#ff1493'],
+['#ff1744','#ff8a80'],
+['#ffffff','#ffe6f0'],
+['#4da6ff','#82cfff'],
+['#ffb347','#ffd699'],
+['#c084fc','#e9d5ff'],
+['#ff4d88','#ffc1d6']
 ];
+if(type==='filler') return ['#ffffff','#f2f2f2'];
+return many[Math.floor(Math.random()*many.length)];
+}
 
-const colors=[
-  "#ff6fa8","#ff3d7f","#ffffff",
-  "#4da6ff","#ff8ad4","#ff1744",
-  "#ffd1e8"
-];
+drawStem(){
+ctx.strokeStyle='#228B22';
+ctx.lineWidth=2;
+ctx.beginPath();
+ctx.moveTo(this.x,this.y+5);
+ctx.lineTo(this.x,this.y+60);
+ctx.stroke();
+}
 
-positions.forEach((p,i)=>{
-  makeFlower(p[0],p[1],colors[i%colors.length]);
-  makeStem(p[0]+70,260+i*8,(i-3)*4);
-});
+drawPetals(){
+ctx.save();
+ctx.translate(this.x,this.y);
+ctx.rotate(this.rotation);
+ctx.scale(this.scale,this.scale);
+
+for(let i=0;i<this.petalCount;i++){
+ctx.rotate((2*Math.PI)/this.petalCount);
+let grad=ctx.createLinearGradient(0,0,0,-60);
+grad.addColorStop(0,this.color[0]);
+grad.addColorStop(1,this.color[1]);
+ctx.fillStyle=grad;
+ctx.beginPath();
+ctx.moveTo(0,0);
+ctx.bezierCurveTo(-20,-50,20,-55,0,-12);
+ctx.fill();
+}
+
+/* white fillers around flower */
+for(let i=0;i<6;i++){
+ctx.beginPath();
+ctx.arc(Math.cos(i)*28,Math.sin(i)*28,3,0,Math.PI*2);
+ctx.fillStyle="#ffffff";
+ctx.shadowColor="#ffffff";
+ctx.shadowBlur=8;
+ctx.fill();
+}
+
+ctx.restore();
+}
+
+update(){this.scale+=(this.targetScale-this.scale)*this.bloomSpeed;}
+draw(){this.drawPetals(); this.drawStem();}
+}
 </script>
-
 </body>
 </html>
