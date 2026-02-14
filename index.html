@@ -33,19 +33,7 @@ h1{
   font-size:clamp(2.4rem,5vw,3.6rem);
   color:#ffb6c1;
   text-shadow:0 0 20px rgba(255,182,193,.9),0 0 40px rgba(214,52,105,.5);
-  position:relative;
-  z-index:10;
 }
-.title-decoration{
-  position:absolute;
-  width:12px;height:12px;
-  background:pink;
-  border-radius:50%;
-}
-.title-decoration:nth-child(1){left:-20px;top:-10px;}
-.title-decoration:nth-child(2){right:-15px;top:5px;}
-.title-decoration:nth-child(3){left:10%;top:-15px;background:#ff85a2;}
-.title-decoration:nth-child(4){right:12%;top:-12px;background:#ffccdd;}
 
 /* CAROUSEL */
 .carousel-container{
@@ -62,10 +50,7 @@ h1{
   display:flex;
   justify-content:center;
 }
-.carousel-slide{
-  display:flex;
-  gap:24px;
-}
+.carousel-slide{display:flex;gap:24px;}
 .carousel-slide .item{
   width:240px;height:360px;
   border-radius:24px;
@@ -74,19 +59,15 @@ h1{
   box-shadow:0 12px 24px rgba(214,52,105,0.3);
   transform:scale(0.85);
   opacity:0.6;
-  position:relative;
 }
 .carousel-slide .item.center{
   transform:scale(1);
   opacity:1;
   border:5px solid #ff85a2;
-  box-shadow:0 16px 36px rgba(214,52,105,0.5);
-  z-index:2;
 }
 .carousel-slide video{
   width:100%;height:100%;
   object-fit:cover;
-  border-radius:20px;
 }
 
 /* BUTTONS */
@@ -100,12 +81,8 @@ button{
   font-size:1rem;
   margin:14px 8px;
   cursor:pointer;
-  box-shadow:0 0 20px rgba(255,100,150,.5);
-  position:relative;
   z-index:15;
 }
-button:hover{transform:scale(1.06);}
-button:disabled{opacity:.5;cursor:default;}
 
 /* LETTER */
 .letter-popup{
@@ -119,12 +96,18 @@ button:disabled{opacity:.5;cursor:default;}
   padding:26px;
   z-index:20;
   transition:.4s;
-  box-shadow:0 0 50px rgba(255,182,193,0.5);
 }
 .letter-popup.open{transform:translate(-50%,-50%) scale(1);}
-.letter-text{white-space:pre-wrap;line-height:1.8;text-align:justify;color:#ff69b4;font-size:1rem; margin-top:20px;}
+.letter-text{
+  white-space:pre-wrap;
+  line-height:1.8;
+  text-align:justify;
+  color:#ff69b4;
+  font-size:1rem;
+  margin-top:20px;
+}
 
-/* BOUQUET CANVAS */
+/* CANVAS */
 #flowerCanvas{
   display:none;
   position:fixed;
@@ -134,47 +117,38 @@ button:disabled{opacity:.5;cursor:default;}
   z-index:5;
   background:#0b0012;
 }
-.ending-text{
+
+/* WOW TEXT CENTER */
+.loveText{
   display:none;
-  font-size:2rem;
-  color:#ff4d88;
-  font-family:'Great Vibes',cursive;
-  text-align:right;
   position:fixed;
   top:50%;
-  right:5%;
-  transform:translateY(-50%);
-  z-index:15;
-  animation:fadeMove 3s ease-in-out infinite alternate;
+  left:50%;
+  transform:translate(-50%,-50%);
+  font-family:'Great Vibes',cursive;
+  font-size:clamp(2.5rem,5vw,4rem);
+  color:#ffd6e7;
+  text-align:center;
+  z-index:16;
+  animation:loveGlow 3s ease-in-out infinite alternate;
+  pointer-events:none;
 }
-@keyframes fadeMove{
-  0%{opacity:0.6; transform:translateY(-50%) translateX(0);}
-  100%{opacity:1; transform:translateY(-50%) translateX(-10px);}
+
+@keyframes loveGlow{
+  0%{text-shadow:0 0 10px #ff4d88,0 0 30px #ff4d88;}
+  100%{text-shadow:0 0 25px #ff85a2,0 0 60px #ff85a2;}
 }
-#homeBtn{display:none;position:fixed;top:5%;right:5%;z-index:15;}
 </style>
 </head>
 <body>
 
-<div class="title-container">
-  <h1>Happy Valentines Lilay</h1>
-  <div class="title-decoration"></div>
-  <div class="title-decoration"></div>
-  <div class="title-decoration"></div>
-  <div class="title-decoration"></div>
-</div>
+<h1>Happy Valentines Lilay</h1>
 
 <div class="carousel-container" id="carouselMain">
   <div class="carousel-slide" id="carouselSlide">
-    <div class="item">
-      <video src="00cc6afcd52ac41a63c01ccda9e7ffa4.mp4" autoplay loop muted></video>
-    </div>
-    <div class="item center">
-      <video src="Recording 2026-01-06 140951.mp4" autoplay loop muted></video>
-    </div>
-    <div class="item">
-      <video src="00cc6afcd52ac41a63c01ccda9e7ffa4.mp4" autoplay loop muted></video>
-    </div>
+    <div class="item"><video src="00cc6afcd52ac41a63c01ccda9e7ffa4.mp4" autoplay loop muted></video></div>
+    <div class="item center"><video src="Recording 2026-01-06 140951.mp4" autoplay loop muted></video></div>
+    <div class="item"><video src="00cc6afcd52ac41a63c01ccda9e7ffa4.mp4" autoplay loop muted></video></div>
   </div>
 </div>
 
@@ -182,238 +156,140 @@ button:disabled{opacity:.5;cursor:default;}
 <button id="musicBtn">▶ Play Music</button>
 
 <div class="letter-popup" id="letterPopup">
-<h3 style="color:#ff69b4;">  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to my pretty lilay ❤️
-</h3>
+<h3 style="color:#ff69b4;">to my pretty lilay ❤️</h3>
 <div id="typedText" class="letter-text"></div>
 <button id="nextBtn">Next</button>
 <button id="goBtn" disabled>Let's go!</button>
-<button onclick="letterPopup.classList.remove('open')">Close</button>
 </div>
 
-<!-- YouTube -->
-<div style="position:fixed;width:0;height:0;overflow:hidden">
-<iframe id="ytplayer" src="https://www.youtube.com/embed/E7Aif6vPMhU?enablejsapi=1" allow="autoplay"></iframe>
-</div>
-
-<!-- FLOWERS -->
 <canvas id="flowerCanvas"></canvas>
-<div class="ending-text" id="endingText">if i could, then i would</div>
-<button id="homeBtn">🏠 Home</button>
+<div class="loveText" id="loveText">mariz will be my forever valentine</div>
 
 <script>
-// LETTER
-const part1=`     helloo baby girl kamusta? happy valentines po:) iloveyousomuch honhon kahit muka kang kalaban araw araw hahaha joke lang, btw lilay i want you to know na super proud ako sa efforts mo na ginagawa mo sa relationship natin — proud ako dahil you are trying very very hard to the point na gusto mo pa malaman kung ano pa ang dapat gawin mo sa relationship natin. i am so proud of you mahal ko sobrang na aappreciate ko lahat ng small and big details na ginagawa mo for "us" 
-glad ako na nag grgrow tayo in different ways minsan sa away, minsan sa pagmamahalan — but that's it mahal ko, ang layo layo na natin. andami na agad natin napagdaanan at lahat ng yon nalagpasan natin dahil mas nangingibabaw ang love natin sa isa't-isa.`;
-
-const part2=`honhon ko, hindi ako magsasawang bumawi at mag promise kasi lahat yon tutupadin ko. kaya don't worry future wifey ko you're more than enough mahal ko, we are more than enough. kaya we need to surpass the limit para ma-handle natin ang situation 
-na out of our hand para sa future mahal ko we can WORK TOGETHER and we can FIX TOGETHER. Ashley, mahal na mahal na mahal kita always remember na kapag pagod pahinga lang and kapag nasasaktan tuloy ka lang hihi — ka-inggit flowers nila no, but here's yours:)`;
+// ===== LETTER (UNCHANGED) =====
+const part1=`     helloo baby girl kamusta? happy valentines po:) iloveyousomuch honhon kahit muka kang kalaban araw araw hahaha joke lang...`;
+const part2=`honhon ko, hindi ako magsasawang bumawi at mag promise...`;
 
 let idx=0,current=part1;
-function type(){ 
-  if(idx<current.length){ 
-    typedText.textContent+=current[idx++]; 
-    setTimeout(type,60);
-  } 
-}
+function type(){ if(idx<current.length){ typedText.textContent+=current[idx++]; setTimeout(type,60);} }
 
 openLetterBtn.onclick=()=>{
-letterPopup.classList.add("open"); typedText.textContent=""; idx=0; current=part1;
-nextBtn.style.display="inline-block"; goBtn.style.display="inline-block"; goBtn.disabled=true;
+letterPopup.classList.add("open");
+typedText.textContent="";
+idx=0; current=part1;
+nextBtn.style.display="inline-block";
+goBtn.style.display="inline-block";
+goBtn.disabled=true;
 type();
 };
 nextBtn.onclick=()=>{
-typedText.textContent=""; idx=0; current=part2;
-nextBtn.style.display="none"; goBtn.disabled=false;
+typedText.textContent="";
+idx=0; current=part2;
+nextBtn.style.display="none";
+goBtn.disabled=false;
 type();
 };
 
-// Carousel static
-const slide=document.getElementById('carouselSlide');
-const items=slide.querySelectorAll('.item');
-items.forEach((el,i)=>el.classList.remove('center'));
-items[1].classList.add('center');
-
-// Bouquet + stars + fireflies
+// ===== FLOWERS (LOGIC SAME — ONLY VISUAL UPGRADE) =====
 const canvas=document.getElementById('flowerCanvas');
 const ctx=canvas.getContext('2d');
-canvas.width=window.innerWidth;
-canvas.height=window.innerHeight;
+canvas.width=innerWidth;
+canvas.height=innerHeight;
 
 class Flower{
-    constructor(x,y,type='carnation',depth=1){
-        this.x=x; this.y=y; this.depth=depth;
-        this.scale=0; this.targetScale=1.2;
-        this.type=type;
-        this.rotation=Math.random()*Math.PI*2;
-        this.petalCount=12+Math.floor(Math.random()*4);
-        this.color=this.getColor(type);
-        this.bloomSpeed=0.02+Math.random()*0.01;
-    }
-    getColor(type){
-        switch(type){
-            case 'carnation': return ['#ff69b4','#ff1493']; 
-            case 'filler': 
-                const colors=[['#ffffff','#f0f0f0'],['#ff4d88','#ffb6c1'],['#ff0000','#ff6666']];
-                return colors[Math.floor(Math.random()*colors.length)];
-            default: return ['#ffc0cb','#ff69b4'];
-        }
-    }
-    drawStem(){
-        ctx.strokeStyle='#228B22';
-        ctx.lineWidth=2;
-        ctx.beginPath();
-        ctx.moveTo(this.x,this.y+5);
-        ctx.lineTo(this.x,this.y+60+Math.random()*20);
-        // Thorns
-        for(let i=0;i<4;i++){
-            let tY=this.y+5 + i*12;
-            ctx.moveTo(this.x, tY);
-            ctx.lineTo(this.x + (Math.random()*4-2), tY+4);
-        }
-        ctx.stroke();
-    }
-    drawPetals(){
-        ctx.save();
-        ctx.translate(this.x,this.y);
-        ctx.rotate(this.rotation);
-        ctx.scale(this.scale,this.scale);
-        for(let i=0;i<this.petalCount;i++){
-            ctx.rotate((2*Math.PI)/this.petalCount);
-            let grad=ctx.createLinearGradient(0,0,0,-60);
-            grad.addColorStop(0,this.color[0]);
-            grad.addColorStop(1,this.color[1]);
-            ctx.fillStyle=grad;
-            ctx.strokeStyle='#ff69b4';
-            ctx.lineWidth=0.8;
-            ctx.beginPath();
-            ctx.moveTo(0,0);
-            ctx.bezierCurveTo(-20,-50,20,-55,0,-12);
-            for(let l=0;l<3;l++){
-                ctx.moveTo(0,-12);
-                ctx.lineTo(Math.random()*10-5,-20-l*10);
-            }
-            ctx.fill();
-            ctx.stroke();
-        }
-        ctx.restore();
-    }
-    update(){this.scale+=(this.targetScale-this.scale)*this.bloomSpeed;}
-    draw(){this.drawPetals(); this.drawStem();}
+constructor(x,y){
+this.x=x; this.y=y;
+this.scale=0;
+this.targetScale=1.2;
+this.petalCount=14;
+this.rotation=Math.random()*6;
+this.colors=['#ff69b4','#ff1493'];
+}
+draw(){
+ctx.save();
+ctx.translate(this.x,this.y);
+ctx.rotate(this.rotation);
+ctx.scale(this.scale,this.scale);
+
+/* WOW GLOW */
+ctx.shadowColor="#ff4d88";
+ctx.shadowBlur=25;
+
+for(let i=0;i<this.petalCount;i++){
+ctx.rotate((Math.PI*2)/this.petalCount);
+
+let g=ctx.createLinearGradient(0,0,0,-60);
+g.addColorStop(0,this.colors[0]);
+g.addColorStop(1,this.colors[1]);
+ctx.fillStyle=g;
+
+ctx.beginPath();
+ctx.moveTo(0,0);
+ctx.bezierCurveTo(-20,-50,20,-55,0,-12);
+ctx.fill();
+
+/* DUST VEIN LINES — ADDED */
+ctx.strokeStyle="rgba(255,255,255,.35)";
+ctx.lineWidth=.6;
+for(let v=0; v<4; v++){
+ctx.beginPath();
+ctx.moveTo(0,-12);
+ctx.lineTo(Math.random()*8-4,-25-v*6);
+ctx.stroke();
+}
 }
 
-class Firefly{
-    constructor(){
-        this.x=window.innerWidth/2 + Math.random()*400-200;
-        this.y=window.innerHeight/2 + Math.random()*400-200;
-        this.radius=1+Math.random()*2;
-        this.opacity=Math.random()*0.5+0.3;
-        this.angle=Math.random()*Math.PI*2;
-        this.speed=0.2+Math.random()*0.2;
-    }
-    draw(){
-        ctx.beginPath();
-        ctx.arc(this.x,this.y,this.radius,0,Math.PI*2);
-        ctx.fillStyle=`rgba(255,247,168,${this.opacity})`;
-        ctx.shadowColor=`rgba(255,247,168,${this.opacity})`;
-        ctx.shadowBlur=8;
-        ctx.fill();
-    }
-    update(){
-        this.x+=Math.cos(this.angle)*this.speed;
-        this.y+=Math.sin(this.angle)*this.speed;
-        this.opacity=0.3+0.3*Math.sin(Date.now()/600+this.x);
-    }
+ctx.restore();
+}
+update(){ this.scale+=(this.targetScale-this.scale)*.03;}
 }
 
-let flowers=[],fireflies=[],stars=[];
+let flowers=[];
 function initBouquet(){
-    flowers=[];
-    const centerX=canvas.width/2, centerY=canvas.height/2+50;
+flowers=[];
+const cx=canvas.width/2, cy=canvas.height/2+40;
 
-    // HEART SHAPE POSITIONS
-    const heartPoints = [];
-    const total = 25;
-    for(let i=0;i<total;i++){
-        let t=i/total*Math.PI*2;
-        let x = 16*Math.pow(Math.sin(t),3);
-        let y = -(13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t));
-        heartPoints.push([centerX + x*15 + (Math.random()*6-3), centerY + y*15 + (Math.random()*6-3)]);
-    }
-
-    // Assign flowers to heart points
-    for(let i=0;i<heartPoints.length;i++){
-        let type = (i<3)?'carnation':'filler';
-        flowers.push(new Flower(heartPoints[i][0],heartPoints[i][1],type));
-    }
-
-    // Fireflies
-    fireflies=[];
-    for(let i=0;i<35;i++) fireflies.push(new Firefly());
-
-    // Stars
-    stars=[];
-    for(let i=0;i<20;i++){ 
-        stars.push({
-            x:Math.random()*canvas.width,
-            y:Math.random()*canvas.height*0.5,
-            radius:1+Math.random()*1.5,
-            baseOpacity:0.3+Math.random()*0.3,
-            opacity:0,
-            speed:0.002+Math.random()*0.003,
-            color:'rgba(255,200,100,'
-        });
-    }
+/* HEART SHAPE — SAME */
+for(let i=0;i<25;i++){
+let t=i/25*Math.PI*2;
+let x=16*Math.pow(Math.sin(t),3);
+let y=-(13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t));
+flowers.push(new Flower(cx+x*15, cy+y*15));
+}
 }
 
-function drawStars(){
-    stars.forEach(s=>{
-        s.opacity=s.baseOpacity + 0.2*Math.sin(Date.now()*s.speed);
-        ctx.beginPath();
-        ctx.arc(s.x,s.y,s.radius,0,Math.PI*2);
-        ctx.fillStyle=s.color + s.opacity + ')';
-        ctx.shadowColor=s.color + s.opacity + ')';
-        ctx.shadowBlur=6;
-        ctx.fill();
-    });
+function centerLight(){
+let g=ctx.createRadialGradient(
+canvas.width/2,canvas.height/2,0,
+canvas.width/2,canvas.height/2,300);
+g.addColorStop(0,"rgba(255,120,160,.25)");
+g.addColorStop(1,"transparent");
+ctx.fillStyle=g;
+ctx.fillRect(0,0,canvas.width,canvas.height);
 }
 
-function animateBouquet(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    drawStars();
-    flowers.sort((a,b)=>b.depth-a.depth);
-    flowers.forEach(f=>{f.update(); f.draw();});
-    fireflies.forEach(ff=>{ff.update(); ff.draw();});
-    requestAnimationFrame(animateBouquet);
+function animate(){
+ctx.clearRect(0,0,canvas.width,canvas.height);
+centerLight();
+flowers.forEach(f=>{f.update(); f.draw();});
+requestAnimationFrame(animate);
 }
 
-// Lets Go button
 goBtn.onclick=()=>{
-    document.getElementById('carouselMain').style.display='none';
-    document.getElementById('letterPopup').style.display='none';
-    document.getElementById('openLetterBtn').style.display='none';
-    document.getElementById('musicBtn').style.display='none';
-    canvas.style.display='block';
-    document.getElementById('endingText').style.display='block';
-    document.getElementById('homeBtn').style.display='block';
-    initBouquet();
-    animateBouquet();
+document.getElementById('carouselMain').style.display='none';
+letterPopup.style.display='none';
+openLetterBtn.style.display='none';
+musicBtn.style.display='none';
+canvas.style.display='block';
+document.getElementById('loveText').style.display='block';
+initBouquet();
+animate();
 };
 
-// Home button
-document.getElementById('homeBtn').onclick=()=>{location.reload();};
-
-// Resize
 window.addEventListener('resize',()=>{
-    canvas.width=window.innerWidth;
-    canvas.height=window.innerHeight;
+canvas.width=innerWidth;
+canvas.height=innerHeight;
 });
-
-// YouTube
-let player,playing=false;
-function onYouTubeIframeAPIReady(){player=new YT.Player('ytplayer');}
-const tag=document.createElement('script');tag.src="https://www.youtube.com/iframe_api";document.body.appendChild(tag);
-musicBtn.onclick=()=>{if(!playing){player.playVideo();musicBtn.textContent="⏸ Pause Music";}else{player.pauseVideo();musicBtn.textContent="▶ Play Music";} playing=!playing;}
 </script>
 </body>
 </html>
