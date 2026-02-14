@@ -4,27 +4,51 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Valentine's Dreamy Carousel</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+
 <style>
 body {
   margin: 0;
   font-family: 'Quicksand', sans-serif;
-  background: linear-gradient(135deg, #ffd1dc, #ffe1e6, #fddde6, #fce4ec);
+
+  /* ==== PHOTO BACKGROUND TEMPLATE ==== */
+  background: url("bg.jpg") no-repeat center center fixed;
+  background-size: cover;
+
   display: flex;
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
   overflow-x: hidden;
+  position: relative;
+}
+
+/* dreamy glass overlay */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255,182,193,0.55),
+    rgba(214,52,105,0.35),
+    rgba(255,192,203,0.45)
+  );
+  backdrop-filter: blur(6px);
+  z-index: -1;
 }
 
 h1 {
   margin-top: 40px;
   font-family: 'Great Vibes', cursive;
   font-size: 3rem;
-  color: #d63469;
+  color: #fff;
   text-align: center;
-  text-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+  text-shadow: 2px 2px 12px rgba(0,0,0,0.6);
 }
+
+/* ===== Carousel ===== */
 
 .carousel-container {
   display: flex;
@@ -33,88 +57,59 @@ h1 {
   margin: 50px 0;
   position: relative;
   width: 100%;
-  max-width: 900px;
+  max-width: 950px;
+
+  backdrop-filter: blur(10px);
+  background: rgba(255,255,255,0.15);
+  border-radius: 30px;
+  padding: 30px;
 }
 
 .carousel-slide {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 20px;
+  gap: 24px;
   width: 100%;
   z-index: 1;
 }
 
 .carousel-slide .item {
-  width: 220px;
-  height: 330px;
+  width: 240px;
+  height: 360px;
   border-radius: 24px;
   overflow: hidden;
-  border: 4px solid transparent;
   background: linear-gradient(45deg, #fff, #ffe1e6);
-  box-shadow: 0 12px 24px rgba(214,52,105,0.3), 0 0 0 4px #fff inset;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  box-shadow: 0 12px 24px rgba(214,52,105,0.3);
   transform: scale(0.85);
   opacity: 0.6;
   transition: all 0.5s ease;
   position: relative;
 }
 
-.carousel-slide .item::after {
-  content: '';
-  position: absolute;
-  top: -10px; left: -10px; right: -10px; bottom: -10px;
-  border-radius: 28px;
-  background: linear-gradient(135deg, #ff85a2, #d63469);
-  z-index: -1;
-  filter: blur(10px);
-  opacity: 0.5;
-}
-
 .carousel-slide .item.center {
   transform: scale(1);
   opacity: 1;
-  border-image: linear-gradient(45deg, #ff85a2, #d63469) 1;
-  border-style: solid;
-  border-width: 5px;
-  box-shadow: 0 16px 32px rgba(214,52,105,0.4);
+  border: 5px solid #ff85a2;
+  box-shadow: 0 16px 36px rgba(214,52,105,0.5);
   z-index: 2;
   animation: glow 2s infinite ease-in-out;
 }
 
 @keyframes glow {
-  0%, 100% { box-shadow: 0 16px 32px rgba(214,52,105,0.4); }
-  50% { box-shadow: 0 20px 40px rgba(214,52,105,0.6); }
+  0%,100% { box-shadow: 0 16px 36px rgba(214,52,105,0.5); }
+  50% { box-shadow: 0 22px 48px rgba(214,52,105,0.8); }
 }
 
 .carousel-slide video {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 20px;
 }
 
-.open-letter-btn {
-  margin-top: 30px;
-  background: #ff85a2;
-  color: white;
-  padding: 14px 28px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  border: none;
-  border-radius: 16px;
-  cursor: pointer;
-  box-shadow: 0 6px 16px rgba(214,52,105,0.3);
-  transition: background 0.3s, transform 0.2s;
-}
-.open-letter-btn:hover {
-  background: #d63469;
-  transform: scale(1.05);
-}
+/* ===== Buttons ===== */
 
-/* NEW MUSIC BUTTON */
+.open-letter-btn,
 .music-btn {
   margin-top: 15px;
   background: #ff85a2;
@@ -125,30 +120,36 @@ h1 {
   border: none;
   border-radius: 16px;
   cursor: pointer;
-  box-shadow: 0 6px 16px rgba(214,52,105,0.3);
-  transition: background 0.3s, transform 0.2s;
+  box-shadow: 0 6px 16px rgba(214,52,105,0.4);
+  transition: 0.3s;
 }
+
+.open-letter-btn:hover,
 .music-btn:hover {
   background: #d63469;
   transform: scale(1.05);
 }
 
+/* ===== Letter Popup ===== */
+
 .letter-popup {
   position: fixed;
   top: 50%;
   left: 50%;
-  width: 350px;
-  max-width: 90%;
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 12px 24px rgba(0,0,0,0.3);
+  width: 360px;
+  max-width: 92%;
+  background: white;
+  border-radius: 18px;
   transform: translate(-50%, -50%) scale(0);
-  transition: transform 0.4s ease-in-out;
+  transition: 0.4s;
   padding: 25px;
   z-index: 1000;
   text-align: center;
 }
-.letter-popup.open { transform: translate(-50%, -50%) scale(1); }
+
+.letter-popup.open {
+  transform: translate(-50%, -50%) scale(1);
+}
 
 .close-btn {
   margin-top: 20px;
@@ -159,7 +160,8 @@ h1 {
   border-radius: 12px;
   cursor: pointer;
 }
-.close-btn:hover { background: #d63469; }
+
+/* ===== Floating Hearts — gilid only ===== */
 
 .heart {
   position: absolute;
@@ -173,6 +175,7 @@ h1 {
   animation: floatUp linear infinite;
   z-index: 0;
 }
+
 .heart::before,
 .heart::after {
   content: "";
@@ -182,33 +185,36 @@ h1 {
   background: pink;
   border-radius: 50%;
 }
+
 .heart::before { top: -6px; left: 0; }
 .heart::after { left: 6px; top: 0; }
 
 @keyframes floatUp {
-  0% { transform: translateX(0) translateY(0) rotate(0deg) scale(1); opacity:1; }
-  50% { transform: translateX(var(--driftX)) translateY(-300px) rotate(15deg) scale(1.2); opacity:0.8; }
-  100% { transform: translateX(calc(var(--driftX)*2)) translateY(-600px) rotate(-15deg) scale(0.8); opacity:0; }
+  0% { transform: translateY(0) rotate(0deg); opacity:1; }
+  100% { transform: translateY(-700px) rotate(20deg); opacity:0; }
 }
 </style>
 </head>
+
 <body>
 
 <h1>Happy Valentines Lilay</h1>
 
 <div class="carousel-container">
   <div class="carousel-slide">
+
     <div class="item">
-      <video src="00cc6afcd52ac41a63c01ccda9e7ffa4.mp4" autoplay loop muted></video>
+      <video src="vid1.mp4" autoplay loop muted></video>
     </div>
 
     <div class="item center">
-      <video src="Recording 2026-01-06 140951.mp4" autoplay loop muted></video>
+      <video src="vid2.mp4" autoplay loop muted></video>
     </div>
 
     <div class="item">
-      <video src="00cc6afcd52ac41a63c01ccda9e7ffa4.mp4" autoplay loop muted></video>
+      <video src="vid3.mp4" autoplay loop muted></video>
     </div>
+
   </div>
 
   <div id="hearts"></div>
@@ -219,12 +225,12 @@ h1 {
 
 <div class="letter-popup" id="letterPopup">
   <h3>To My Love ❤️</h3>
-  <p>You are my sunshine and my heart. I hope this little surprise makes your Valentine's Day extra special! 🌸</p>
+  <p>You are my sunshine and my heart. This little surprise is for you.</p>
   <button class="close-btn" id="closeLetterBtn">Close</button>
 </div>
 
-<!-- Hidden YouTube player (auto JS API) -->
-<div style="position:fixed; width:0; height:0; overflow:hidden;">
+<!-- Hidden YouTube player -->
+<div style="position:fixed;width:0;height:0;overflow:hidden;">
   <iframe id="ytplayer"
     src="https://www.youtube.com/embed/E7Aif6vPMhU?enablejsapi=1"
     allow="autoplay">
@@ -232,51 +238,40 @@ h1 {
 </div>
 
 <script>
-// Letter popup
-const openLetterBtn = document.getElementById('openLetterBtn');
-const letterPopup = document.getElementById('letterPopup');
-const closeLetterBtn = document.getElementById('closeLetterBtn');
+// popup
+openLetterBtn.onclick = () => letterPopup.classList.add("open");
+closeLetterBtn.onclick = () => letterPopup.classList.remove("open");
 
-openLetterBtn.addEventListener('click', () => letterPopup.classList.add('open'));
-closeLetterBtn.addEventListener('click', () => letterPopup.classList.remove('open'));
-
-// Hearts
-const heartsContainer = document.getElementById('hearts');
-const NUM_HEARTS = 20;
-for (let i = 0; i < NUM_HEARTS; i++) {
-  const heart = document.createElement('div');
-  heart.classList.add('heart');
-  const side = Math.random() < 0.5 ? 'left' : 'right';
-  if(side === 'left') {
-    heart.style.left = `${Math.random() * 20}%`;
-  } else {
-    heart.style.left = `${80 + Math.random() * 20}%`;
-  }
-  heart.style.animationDuration = `${5 + Math.random()*5}s`;
-  heart.style.setProperty('--driftX', `${Math.random()*60 - 30}px`);
-  heartsContainer.appendChild(heart);
+// hearts sa gilid lang
+const hearts = document.getElementById("hearts");
+for(let i=0;i<24;i++){
+  const h = document.createElement("div");
+  h.className = "heart";
+  h.style.left = Math.random()<0.5
+    ? Math.random()*15 + "%"
+    : 85 + Math.random()*15 + "%";
+  h.style.animationDuration = 6 + Math.random()*5 + "s";
+  hearts.appendChild(h);
 }
 
-// YouTube API Music Controls
-let player, playing = false;
-function onYouTubeIframeAPIReady() {
+// youtube api
+let player, playing=false;
+function onYouTubeIframeAPIReady(){
   player = new YT.Player('ytplayer');
 }
-
-const tag = document.createElement('script');
-tag.src = "https://www.youtube.com/iframe_api";
+const tag=document.createElement('script');
+tag.src="https://www.youtube.com/iframe_api";
 document.body.appendChild(tag);
 
-const musicBtn = document.getElementById('musicBtn');
 musicBtn.onclick = () => {
-  if(!playing) {
+  if(!playing){
     player.playVideo();
-    musicBtn.textContent = "⏸ Pause Music";
-    playing = true;
+    musicBtn.textContent="⏸ Pause Music";
+    playing=true;
   } else {
     player.pauseVideo();
-    musicBtn.textContent = "▶ Play Music";
-    playing = false;
+    musicBtn.textContent="▶ Play Music";
+    playing=false;
   }
 };
 </script>
