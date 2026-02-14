@@ -191,100 +191,229 @@ button:disabled{opacity:.5;cursor:default;}
 <button onclick="letterPopup.classList.remove('open')">Close</button>
 </div>
 
+<!-- YouTube -->
 <div style="position:fixed;width:0;height:0;overflow:hidden">
 <iframe id="ytplayer" src="https://www.youtube.com/embed/E7Aif6vPMhU?enablejsapi=1" allow="autoplay"></iframe>
 </div>
 
+<!-- FLOWERS -->
 <canvas id="flowerCanvas"></canvas>
 <div class="ending-text" id="endingText">if i could, then i would</div>
 <button id="homeBtn">🏠 Home</button>
 
 <script>
-// LETTER (UNCHANGED)
-const part1=`     helloo baby girl kamusta? happy valentines po:) iloveyousomuch honhon kahit muka kang kalaban araw araw hahaha joke lang...`;
-const part2=`honhon ko, hindi ako magsasawang bumawi at mag promise kasi lahat yon tutupadin ko...`;
+// LETTER
+const part1=`     helloo baby girl kamusta? happy valentines po:) iloveyousomuch honhon kahit muka kang kalaban araw araw hahaha joke lang, btw lilay i want you to know na super proud ako sa efforts mo na ginagawa mo sa relationship natin — proud ako dahil you are trying very very hard to the point na gusto mo pa malaman kung ano pa ang dapat gawin mo sa relationship natin. i am so proud of you mahal ko sobrang na aappreciate ko lahat ng small and big details na ginagawa mo for "us" 
+glad ako na nag grgrow tayo in different ways minsan sa away, minsan sa pagmamahalan — but that's it mahal ko, ang layo layo na natin. andami na agad natin napagdaanan at lahat ng yon nalagpasan natin dahil mas nangingibabaw ang love natin sa isa't-isa.`;
+
+const part2=`honhon ko, hindi ako magsasawang bumawi at mag promise kasi lahat yon tutupadin ko. kaya don't worry future wifey ko you're more than enough mahal ko, we are more than enough. kaya we need to surpass the limit para ma-handle natin ang situation 
+na out of our hand para sa future mahal ko we can WORK TOGETHER and we can FIX TOGETHER. Ashley, mahal na mahal na mahal kita always remember na kapag pagod pahinga lang and kapag nasasaktan tuloy ka lang hihi — ka-inggit flowers nila no, but here's yours:)`;
 
 let idx=0,current=part1;
-function type(){ if(idx<current.length){ typedText.textContent+=current[idx++]; setTimeout(type,60);} }
+function type(){ 
+  if(idx<current.length){ 
+    typedText.textContent+=current[idx++]; 
+    setTimeout(type,60);
+  } 
+}
 
-openLetterBtn.onclick=()=>{letterPopup.classList.add("open"); typedText.textContent=""; idx=0; current=part1; nextBtn.style.display="inline-block"; goBtn.style.display="inline-block"; goBtn.disabled=true; type();};
-nextBtn.onclick=()=>{typedText.textContent=""; idx=0; current=part2; nextBtn.style.display="none"; goBtn.disabled=false; type();};
+openLetterBtn.onclick=()=>{
+letterPopup.classList.add("open"); typedText.textContent=""; idx=0; current=part1;
+nextBtn.style.display="inline-block"; goBtn.style.display="inline-block"; goBtn.disabled=true;
+type();
+};
+nextBtn.onclick=()=>{
+typedText.textContent=""; idx=0; current=part2;
+nextBtn.style.display="none"; goBtn.disabled=false;
+type();
+};
 
-// CANVAS
+// Carousel static
+const slide=document.getElementById('carouselSlide');
+const items=slide.querySelectorAll('.item');
+items.forEach((el,i)=>el.classList.remove('center'));
+items[1].classList.add('center');
+
+// Bouquet + stars + fireflies
 const canvas=document.getElementById('flowerCanvas');
 const ctx=canvas.getContext('2d');
 canvas.width=window.innerWidth;
 canvas.height=window.innerHeight;
 
-/* ✅ ONLY UPDATED PART — MANY COLORS + WHITE FILLERS */
 class Flower{
-constructor(x,y,type='carnation',depth=1){
-this.x=x; this.y=y; this.depth=depth;
-this.scale=0; this.targetScale=1.2;
-this.type=type;
-this.rotation=Math.random()*Math.PI*2;
-this.petalCount=12+Math.floor(Math.random()*4);
-this.color=this.getColor(type);
-this.bloomSpeed=0.02+Math.random()*0.01;
+    constructor(x,y,type='carnation',depth=1){
+        this.x=x; this.y=y; this.depth=depth;
+        this.scale=0; this.targetScale=1.2;
+        this.type=type;
+        this.rotation=Math.random()*Math.PI*2;
+        this.petalCount=12+Math.floor(Math.random()*4);
+        this.color=this.getColor(type);
+        this.bloomSpeed=0.02+Math.random()*0.01;
+    }
+    getColor(type){
+        switch(type){
+            case 'carnation': return ['#ff69b4','#ff1493']; 
+            case 'filler': 
+                const colors=[['#ffffff','#f0f0f0'],['#ff4d88','#ffb6c1'],['#ff0000','#ff6666']];
+                return colors[Math.floor(Math.random()*colors.length)];
+            default: return ['#ffc0cb','#ff69b4'];
+        }
+    }
+    drawStem(){
+        ctx.strokeStyle='#228B22';
+        ctx.lineWidth=2;
+        ctx.beginPath();
+        ctx.moveTo(this.x,this.y+5);
+        ctx.lineTo(this.x,this.y+60+Math.random()*20);
+        // Thorns
+        for(let i=0;i<4;i++){
+            let tY=this.y+5 + i*12;
+            ctx.moveTo(this.x, tY);
+            ctx.lineTo(this.x + (Math.random()*4-2), tY+4);
+        }
+        ctx.stroke();
+    }
+    drawPetals(){
+        ctx.save();
+        ctx.translate(this.x,this.y);
+        ctx.rotate(this.rotation);
+        ctx.scale(this.scale,this.scale);
+        for(let i=0;i<this.petalCount;i++){
+            ctx.rotate((2*Math.PI)/this.petalCount);
+            let grad=ctx.createLinearGradient(0,0,0,-60);
+            grad.addColorStop(0,this.color[0]);
+            grad.addColorStop(1,this.color[1]);
+            ctx.fillStyle=grad;
+            ctx.strokeStyle='#ff69b4';
+            ctx.lineWidth=0.8;
+            ctx.beginPath();
+            ctx.moveTo(0,0);
+            ctx.bezierCurveTo(-20,-50,20,-55,0,-12);
+            for(let l=0;l<3;l++){
+                ctx.moveTo(0,-12);
+                ctx.lineTo(Math.random()*10-5,-20-l*10);
+            }
+            ctx.fill();
+            ctx.stroke();
+        }
+        ctx.restore();
+    }
+    update(){this.scale+=(this.targetScale-this.scale)*this.bloomSpeed;}
+    draw(){this.drawPetals(); this.drawStem();}
 }
 
-getColor(type){
-const many=[
-['#ff69b4','#ff1493'],
-['#ff1744','#ff8a80'],
-['#ffffff','#ffe6f0'],
-['#4da6ff','#82cfff'],
-['#ffb347','#ffd699'],
-['#c084fc','#e9d5ff'],
-['#ff4d88','#ffc1d6']
-];
-if(type==='filler') return ['#ffffff','#f2f2f2'];
-return many[Math.floor(Math.random()*many.length)];
+class Firefly{
+    constructor(){
+        this.x=window.innerWidth/2 + Math.random()*400-200;
+        this.y=window.innerHeight/2 + Math.random()*400-200;
+        this.radius=1+Math.random()*2;
+        this.opacity=Math.random()*0.5+0.3;
+        this.angle=Math.random()*Math.PI*2;
+        this.speed=0.2+Math.random()*0.2;
+    }
+    draw(){
+        ctx.beginPath();
+        ctx.arc(this.x,this.y,this.radius,0,Math.PI*2);
+        ctx.fillStyle=`rgba(255,247,168,${this.opacity})`;
+        ctx.shadowColor=`rgba(255,247,168,${this.opacity})`;
+        ctx.shadowBlur=8;
+        ctx.fill();
+    }
+    update(){
+        this.x+=Math.cos(this.angle)*this.speed;
+        this.y+=Math.sin(this.angle)*this.speed;
+        this.opacity=0.3+0.3*Math.sin(Date.now()/600+this.x);
+    }
 }
 
-drawStem(){
-ctx.strokeStyle='#228B22';
-ctx.lineWidth=2;
-ctx.beginPath();
-ctx.moveTo(this.x,this.y+5);
-ctx.lineTo(this.x,this.y+60);
-ctx.stroke();
+let flowers=[],fireflies=[],stars=[];
+function initBouquet(){
+    flowers=[];
+    const centerX=canvas.width/2, centerY=canvas.height/2+50;
+
+    // HEART SHAPE POSITIONS
+    const heartPoints = [];
+    const total = 25;
+    for(let i=0;i<total;i++){
+        let t=i/total*Math.PI*2;
+        let x = 16*Math.pow(Math.sin(t),3);
+        let y = -(13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t));
+        heartPoints.push([centerX + x*15 + (Math.random()*6-3), centerY + y*15 + (Math.random()*6-3)]);
+    }
+
+    // Assign flowers to heart points
+    for(let i=0;i<heartPoints.length;i++){
+        let type = (i<3)?'carnation':'filler';
+        flowers.push(new Flower(heartPoints[i][0],heartPoints[i][1],type));
+    }
+
+    // Fireflies
+    fireflies=[];
+    for(let i=0;i<35;i++) fireflies.push(new Firefly());
+
+    // Stars
+    stars=[];
+    for(let i=0;i<20;i++){ 
+        stars.push({
+            x:Math.random()*canvas.width,
+            y:Math.random()*canvas.height*0.5,
+            radius:1+Math.random()*1.5,
+            baseOpacity:0.3+Math.random()*0.3,
+            opacity:0,
+            speed:0.002+Math.random()*0.003,
+            color:'rgba(255,200,100,'
+        });
+    }
 }
 
-drawPetals(){
-ctx.save();
-ctx.translate(this.x,this.y);
-ctx.rotate(this.rotation);
-ctx.scale(this.scale,this.scale);
-
-for(let i=0;i<this.petalCount;i++){
-ctx.rotate((2*Math.PI)/this.petalCount);
-let grad=ctx.createLinearGradient(0,0,0,-60);
-grad.addColorStop(0,this.color[0]);
-grad.addColorStop(1,this.color[1]);
-ctx.fillStyle=grad;
-ctx.beginPath();
-ctx.moveTo(0,0);
-ctx.bezierCurveTo(-20,-50,20,-55,0,-12);
-ctx.fill();
+function drawStars(){
+    stars.forEach(s=>{
+        s.opacity=s.baseOpacity + 0.2*Math.sin(Date.now()*s.speed);
+        ctx.beginPath();
+        ctx.arc(s.x,s.y,s.radius,0,Math.PI*2);
+        ctx.fillStyle=s.color + s.opacity + ')';
+        ctx.shadowColor=s.color + s.opacity + ')';
+        ctx.shadowBlur=6;
+        ctx.fill();
+    });
 }
 
-/* white fillers around flower */
-for(let i=0;i<6;i++){
-ctx.beginPath();
-ctx.arc(Math.cos(i)*28,Math.sin(i)*28,3,0,Math.PI*2);
-ctx.fillStyle="#ffffff";
-ctx.shadowColor="#ffffff";
-ctx.shadowBlur=8;
-ctx.fill();
+function animateBouquet(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    drawStars();
+    flowers.sort((a,b)=>b.depth-a.depth);
+    flowers.forEach(f=>{f.update(); f.draw();});
+    fireflies.forEach(ff=>{ff.update(); ff.draw();});
+    requestAnimationFrame(animateBouquet);
 }
 
-ctx.restore();
-}
+// Lets Go button
+goBtn.onclick=()=>{
+    document.getElementById('carouselMain').style.display='none';
+    document.getElementById('letterPopup').style.display='none';
+    document.getElementById('openLetterBtn').style.display='none';
+    document.getElementById('musicBtn').style.display='none';
+    canvas.style.display='block';
+    document.getElementById('endingText').style.display='block';
+    document.getElementById('homeBtn').style.display='block';
+    initBouquet();
+    animateBouquet();
+};
 
-update(){this.scale+=(this.targetScale-this.scale)*this.bloomSpeed;}
-draw(){this.drawPetals(); this.drawStem();}
-}
+// Home button
+document.getElementById('homeBtn').onclick=()=>{location.reload();};
+
+// Resize
+window.addEventListener('resize',()=>{
+    canvas.width=window.innerWidth;
+    canvas.height=window.innerHeight;
+});
+
+// YouTube
+let player,playing=false;
+function onYouTubeIframeAPIReady(){player=new YT.Player('ytplayer');}
+const tag=document.createElement('script');tag.src="https://www.youtube.com/iframe_api";document.body.appendChild(tag);
+musicBtn.onclick=()=>{if(!playing){player.playVideo();musicBtn.textContent="⏸ Pause Music";}else{player.pauseVideo();musicBtn.textContent="▶ Play Music";} playing=!playing;}
 </script>
 </body>
 </html>
