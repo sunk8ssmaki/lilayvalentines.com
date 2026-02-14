@@ -360,30 +360,48 @@ function initBouquet(){
     }
 }
 
-// DRAW V-SHAPE CONTAINER
+// DRAW BIGGER V-SHAPE CONTAINER WITH LINES
 function drawVContainer(){
     ctx.save();
-    ctx.translate(canvas.width/2, canvas.height/2+130);
-    ctx.fillStyle='#ff0000';
+    ctx.translate(canvas.width/2, canvas.height/2 + 130);
+
+    const vWidth = 250;   // wider
+    const vHeight = 200;  // taller
+
+    // Main V shape
+    ctx.fillStyle = '#ff0000';
     ctx.beginPath();
-    ctx.moveTo(-80,0);
-    ctx.lineTo(0,120);
-    ctx.lineTo(80,0);
+    ctx.moveTo(-vWidth/2, 0);        // left top
+    ctx.lineTo(0, vHeight);          // bottom
+    ctx.lineTo(vWidth/2, 0);         // right top
     ctx.closePath();
     ctx.fill();
-    // Ribbon
-    let gradRibbon=ctx.createLinearGradient(-60,0,60,60);
-    gradRibbon.addColorStop(0,'#e60073');
-    gradRibbon.addColorStop(0.5,'#ff4d88');
-    gradRibbon.addColorStop(1,'#e60073');
-    ctx.fillStyle=gradRibbon;
+
+    // Ribbon with gradient
+    let gradRibbon = ctx.createLinearGradient(-vWidth/2 + 30, 0, vWidth/2 - 30, vHeight/2);
+    gradRibbon.addColorStop(0, '#e60073');
+    gradRibbon.addColorStop(0.5, '#ff4d88');
+    gradRibbon.addColorStop(1, '#e60073');
+    ctx.fillStyle = gradRibbon;
     ctx.beginPath();
-    ctx.moveTo(-50,30);
-    ctx.bezierCurveTo(-20,70,20,70,50,30);
-    ctx.lineTo(50,50);
-    ctx.bezierCurveTo(20,90,-20,90,-50,50);
+    ctx.moveTo(-vWidth/2 + 30, vHeight/4);
+    ctx.bezierCurveTo(-vWidth/4, vHeight * 0.7, vWidth/4, vHeight * 0.7, vWidth/2 - 30, vHeight/4);
+    ctx.lineTo(vWidth/2 - 30, vHeight/4 + 20);
+    ctx.bezierCurveTo(vWidth/4, vHeight * 0.85, -vWidth/4, vHeight * 0.85, -vWidth/2 + 30, vHeight/4 + 20);
     ctx.closePath();
     ctx.fill();
+
+    // Top lines to show flowers are inside
+    ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+    ctx.lineWidth = 2;
+    for (let i = 1; i <= 5; i++) {
+        ctx.beginPath();
+        ctx.moveTo(-vWidth/2 + i*20, 0);
+        ctx.lineTo(0, vHeight - i*20);
+        ctx.lineTo(vWidth/2 - i*20, 0);
+        ctx.stroke();
+    }
+
     ctx.restore();
 }
 
@@ -420,27 +438,20 @@ goBtn.onclick=()=>{
     document.getElementById('musicBtn').style.display='none';
 
     canvas.style.display='block';
-    document.getElementById('endingText').style.display='block';
-    document.getElementById('homeBtn').style.display='block';
-
+    endingText.style.display='block';
+    homeBtn.style.display='block';
     initBouquet();
     animateBouquet();
 };
 
-// Home button
-document.getElementById('homeBtn').onclick=()=>{location.reload();};
-
-// Resize
-window.addEventListener('resize',()=>{
-    canvas.width=window.innerWidth;
-    canvas.height=window.innerHeight;
-});
-
-// YouTube
-let player,playing=false;
-function onYouTubeIframeAPIReady(){player=new YT.Player('ytplayer');}
-const tag=document.createElement('script');tag.src="https://www.youtube.com/iframe_api";document.body.appendChild(tag);
-musicBtn.onclick=()=>{if(!playing){player.playVideo();musicBtn.textContent="⏸ Pause Music";}else{player.pauseVideo();musicBtn.textContent="▶ Play Music";} playing=!playing;}
+// Music
+const ytplayer=document.getElementById('ytplayer');
+let musicPlaying=false;
+musicBtn.onclick=()=>{
+    if(!musicPlaying){ytplayer.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}','*'); musicPlaying=true; musicBtn.textContent='⏸ Pause Music';}
+    else{ytplayer.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}','*'); musicPlaying=false; musicBtn.textContent='▶ Play Music';}
+};
 </script>
+
 </body>
 </html>
