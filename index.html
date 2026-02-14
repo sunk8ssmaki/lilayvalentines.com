@@ -260,17 +260,16 @@ class Flower{
         }
     }
     drawStem(){
-        // THIN GREEN STEM V-SHAPE DOWN
         ctx.strokeStyle='#228B22';
-        ctx.lineWidth=3*this.depth;
+        ctx.lineWidth=2;
         ctx.beginPath();
-        ctx.moveTo(this.x,this.y+20); // top of stem connects to flower bottom
-        ctx.lineTo(this.x,this.y+80+Math.random()*30); // extend downward
+        ctx.moveTo(this.x,this.y+5);
+        ctx.lineTo(this.x,this.y+60+Math.random()*20);
         // Thorns
-        for(let i=0;i<5;i++){
-            let tY=this.y+20 + i*12;
+        for(let i=0;i<4;i++){
+            let tY=this.y+5 + i*12;
             ctx.moveTo(this.x, tY);
-            ctx.lineTo(this.x + (Math.random()*6-3), tY+4);
+            ctx.lineTo(this.x + (Math.random()*4-2), tY+4);
         }
         ctx.stroke();
     }
@@ -332,19 +331,20 @@ function initBouquet(){
     flowers=[];
     const centerX=canvas.width/2, centerY=canvas.height/2+50;
 
-    // Middle 3 big pink carnations
-    flowers.push(new Flower(centerX-60,centerY,'carnation',1.2));
-    flowers.push(new Flower(centerX,centerY,'carnation',1.4));
-    flowers.push(new Flower(centerX+60,centerY,'carnation',1.2));
+    // HEART SHAPE POSITIONS
+    const heartPoints = [];
+    const total = 25;
+    for(let i=0;i<total;i++){
+        let t=i/total*Math.PI*2;
+        let x = 16*Math.pow(Math.sin(t),3);
+        let y = -(13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t));
+        heartPoints.push([centerX + x*15 + (Math.random()*6-3), centerY + y*15 + (Math.random()*6-3)]);
+    }
 
-    // Surrounding white fillers
-    for(let i=0;i<18;i++){
-        let angle=Math.random()*Math.PI*2;
-        let radius=50+Math.random()*40;
-        let dx=Math.cos(angle)*radius;
-        let dy=Math.sin(angle)*radius + 10;
-        flowers.push(new Flower(centerX+dx,centerY+dy,'filler',0.8));
-        flowers[flowers.length-1].color=['#ffffff','#f0f0f0']; // force white filler
+    // Assign flowers to heart points
+    for(let i=0;i<heartPoints.length;i++){
+        let type = (i<3)?'carnation':'filler';
+        flowers.push(new Flower(heartPoints[i][0],heartPoints[i][1],type));
     }
 
     // Fireflies
@@ -380,13 +380,10 @@ function drawStars(){
 
 function animateBouquet(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
-
     drawStars();
-
     flowers.sort((a,b)=>b.depth-a.depth);
     flowers.forEach(f=>{f.update(); f.draw();});
     fireflies.forEach(ff=>{ff.update(); ff.draw();});
-
     requestAnimationFrame(animateBouquet);
 }
 
@@ -396,11 +393,9 @@ goBtn.onclick=()=>{
     document.getElementById('letterPopup').style.display='none';
     document.getElementById('openLetterBtn').style.display='none';
     document.getElementById('musicBtn').style.display='none';
-
     canvas.style.display='block';
     document.getElementById('endingText').style.display='block';
     document.getElementById('homeBtn').style.display='block';
-
     initBouquet();
     animateBouquet();
 };
