@@ -3,111 +3,50 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Dreamy Valentine 3D</title>
+<title>Valentine Dream</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
-
 *{box-sizing:border-box}
-
 body{
 margin:0;
 font-family:'Quicksand',sans-serif;
 color:white;
-overflow-x:hidden;
-background:
-radial-gradient(circle at 20% 30%, #2b0f1a, #0b0b1a 60%, #050510);
 min-height:100vh;
+overflow-x:hidden;
 display:flex;
 flex-direction:column;
 align-items:center;
+background:radial-gradient(circle at 30% 20%, #2a0f1a, #0a0a18 60%, #04040a);
 }
 
-/* ⭐ STARRY SKY */
-
-.stars, .stars2{
-position:fixed;
-inset:0;
-pointer-events:none;
-background-repeat:repeat;
-animation:starScroll 120s linear infinite;
-opacity:.6;
-}
-
-.stars{
-background-image:radial-gradient(white 1px, transparent 1px);
-background-size:3px 3px;
-}
-
-.stars2{
-background-image:radial-gradient(#ffb6c1 1px, transparent 1px);
-background-size:5px 5px;
-animation-duration:200s;
-opacity:.3;
-}
-
-@keyframes starScroll{
-from{transform:translateY(0)}
-to{transform:translateY(-2000px)}
-}
-
-/* ===== TITLE ===== */
+/* STARRY NIGHT */
+.stars,.stars2{position:fixed;inset:0;pointer-events:none;z-index:0;}
+.stars{background-image:radial-gradient(white 1px,transparent 1px);background-size:3px 3px;animation:scroll 140s linear infinite;opacity:.7;}
+.stars2{background-image:radial-gradient(#ffb6c1 1px,transparent 1px);background-size:5px 5px;animation:scroll 220s linear infinite;opacity:.35;}
+@keyframes scroll{from{transform:translateY(0)}to{transform:translateY(-2000px)}}
 
 h1{
-margin-top:30px;
 font-family:'Great Vibes',cursive;
-font-size:clamp(2.2rem,5vw,3.6rem);
-text-shadow:0 0 20px rgba(255,150,180,.8);
+font-size:clamp(2.4rem,5vw,3.6rem);
+margin:30px 10px 10px;
+text-align:center;
+text-shadow:0 0 20px rgba(255,140,170,.9);
+z-index:3;
 }
 
-/* ===== GLASS CAROUSEL ===== */
-
+/* YOUR CAROUSEL STYLE — enhanced glass only */
 .carousel-container{
-width:95%;
-max-width:1000px;
-margin-top:20px;
-padding:24px;
-border-radius:30px;
-background:rgba(255,255,255,.08);
+z-index:3;
 backdrop-filter:blur(14px);
+background:rgba(255,255,255,.08);
+border-radius:28px;
+padding:22px;
 box-shadow:0 0 40px rgba(255,120,160,.25);
-position:relative;
 }
 
-.carousel-slide{
-display:flex;
-justify-content:center;
-gap:18px;
-}
-
-.item{
-width:28vw;
-max-width:260px;
-height:380px;
-border-radius:24px;
-overflow:hidden;
-transform:scale(.85);
-opacity:.6;
-transition:.5s;
-box-shadow:0 0 30px rgba(255,120,160,.25);
-}
-
-.item.center{
-transform:scale(1);
-opacity:1;
-box-shadow:0 0 60px rgba(255,120,160,.7);
-border:4px solid #ff7fa5;
-}
-
-.item video{
-width:100%;
-height:100%;
-object-fit:cover;
-}
-
-/* ===== BUTTONS ===== */
-
+/* buttons */
 button{
 background:linear-gradient(45deg,#ff7fa5,#ff4d88);
 border:none;
@@ -116,108 +55,40 @@ border-radius:18px;
 color:white;
 font-weight:600;
 font-size:1rem;
-margin:12px;
+margin:14px 8px;
 cursor:pointer;
 box-shadow:0 0 20px rgba(255,100,150,.5);
-transition:.3s;
+z-index:5;
+position:relative;
 }
+button:hover{transform:scale(1.06)}
 
-button:hover{
-transform:scale(1.07);
-box-shadow:0 0 30px rgba(255,120,160,.9);
-}
-
-/* ===== LETTER MODAL ===== */
-
+/* letter */
 .letter-popup{
 position:fixed;
-top:50%;
-left:50%;
+top:50%;left:50%;
 transform:translate(-50%,-50%) scale(0);
-background:rgba(255,255,255,.12);
+width:95%;max-width:560px;max-height:80vh;
+overflow:auto;
+background:rgba(255,255,255,.14);
 backdrop-filter:blur(18px);
-border-radius:26px;
-padding:28px;
-width:92%;
-max-width:520px;
+border-radius:24px;
+padding:26px;
 z-index:10;
-box-shadow:0 0 60px rgba(255,120,160,.4);
-transition:.5s;
+transition:.4s;
 }
+.letter-popup.open{transform:translate(-50%,-50%) scale(1);}
+.letter-text{white-space:pre-wrap;line-height:1.7;text-align:justify}
 
-.letter-popup.open{
-transform:translate(-50%,-50%) scale(1);
-}
+/* flowers */
+.flower{position:fixed;bottom:-20px;width:90px;height:90px;pointer-events:none;z-index:2;animation:wind 8s ease-in-out infinite;}
+@keyframes wind{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(4deg)}}
+.petal{position:absolute;width:46px;height:70px;background:linear-gradient(#ff9ab5,#ff3d74);border-radius:50%;top:10px;left:22px;transform-origin:bottom center;}
+.center-dot{position:absolute;width:18px;height:18px;background:gold;border-radius:50%;top:38px;left:36px;box-shadow:0 0 10px gold}
 
-.letter-text{
-min-height:220px;
-line-height:1.7;
-font-size:1rem;
-white-space:pre-wrap;
-}
-
-/* ===== 3D FLOWERS ===== */
-
-.flower{
-position:fixed;
-bottom:-40px;
-width:90px;
-height:90px;
-transform-style:preserve-3d;
-animation:wind 8s ease-in-out infinite;
-}
-
-@keyframes wind{
-0%,100%{transform:rotateZ(-3deg) rotateY(0deg)}
-50%{transform:rotateZ(3deg) rotateY(12deg)}
-}
-
-.petal{
-position:absolute;
-width:46px;
-height:70px;
-background:linear-gradient(#ff9ab5,#ff3d74);
-border-radius:50%;
-top:10px;
-left:22px;
-transform-origin:bottom center;
-filter:drop-shadow(0 0 8px rgba(255,80,120,.6));
-}
-
-.center-dot{
-position:absolute;
-width:18px;
-height:18px;
-background:gold;
-border-radius:50%;
-top:38px;
-left:36px;
-box-shadow:0 0 10px gold;
-}
-
-/* ===== FIREFLIES ===== */
-
-.firefly{
-position:fixed;
-width:6px;
-height:6px;
-background:#fff7a8;
-border-radius:50%;
-box-shadow:0 0 14px #fff7a8;
-animation:fly linear infinite;
-opacity:.9;
-}
-
-@keyframes fly{
-from{transform:translateY(0)}
-to{transform:translateY(-900px)}
-}
-
-/* responsive */
-@media(max-width:700px){
-.item{height:300px}
-}
-
+/* fireflies */
+.firefly{position:fixed;width:6px;height:6px;background:#fff7a8;border-radius:50%;box-shadow:0 0 14px #fff7a8;pointer-events:none;z-index:1;animation:fly linear infinite;}
+@keyframes fly{from{transform:translateY(0)}to{transform:translateY(-900px)}}
 </style>
 </head>
 
@@ -228,18 +99,28 @@ to{transform:translateY(-900px)}
 
 <h1>Happy Valentines Lilay</h1>
 
+<!-- ===== YOUR ORIGINAL VIDEO SOURCES RESTORED ===== -->
 <div class="carousel-container">
-<div class="carousel-slide">
-<div class="item"><video src="vid1.mp4" autoplay loop muted></video></div>
-<div class="item center"><video src="vid2.mp4" autoplay loop muted></video></div>
-<div class="item"><video src="vid3.mp4" autoplay loop muted></video></div>
-</div>
+  <div class="carousel-slide">
+
+    <div class="item">
+      <video src="00cc6afcd52ac41a63c01ccda9e7ffa4.mp4" autoplay loop muted></video>
+    </div>
+
+    <div class="item center">
+      <video src="Recording 2026-01-06 140951.mp4" autoplay loop muted></video>
+    </div>
+
+    <div class="item">
+      <video src="00cc6afcd52ac41a63c01ccda9e7ffa4.mp4" autoplay loop muted></video>
+    </div>
+
+  </div>
+  <div id="hearts"></div>
 </div>
 
 <button id="openLetterBtn">Open Letter</button>
 <button id="musicBtn">▶ Play Music</button>
-
-<!-- ===== LETTER ===== -->
 
 <div class="letter-popup" id="letterPopup">
 <h3>to my pretty lilay ❤️</h3>
@@ -249,8 +130,7 @@ to{transform:translateY(-900px)}
 <button onclick="letterPopup.classList.remove('open')">Close</button>
 </div>
 
-<!-- ===== YT MUSIC ===== -->
-
+<!-- YOUTUBE LINK — UNCHANGED -->
 <div style="position:fixed;width:0;height:0;overflow:hidden">
 <iframe id="ytplayer"
 src="https://www.youtube.com/embed/E7Aif6vPMhU?enablejsapi=1"
@@ -258,77 +138,50 @@ allow="autoplay"></iframe>
 </div>
 
 <script>
-
-/* ===== YOUR LETTER — UNCHANGED ===== */
-
+/* letter — unchanged text */
 const part1 = `helloo baby girl kamusta? happy valentines po:) iloveyousomuch honhon kahit muka kang kalaban araw araw hahaha joke lang, btw lilay i want you to know na super proud ako sa efforts mo na ginagawa sa relationship natin——— proud ako dahil you are trying very very hard to the point na gusto mo pa malaman kung ano pa ang dapat gawin mo sa relationship natin. i am so proud of you mahal ko sobrang na aappreciate ko lahat ng small and big details na ginagawa mo for "us" 
 glad ako na nag grgrow tayo in different ways minsan sa away, minsan sa pagmamahalan——— but that's it mahal ko, ang layo layo na natin. andami na agad natin napagdaanan at lahat ng yon nalagpasan natin dahil mas nangingibabaw ang love natin sa isa't-isa.`;
 
 const part2 = ` honhon ko, hindi ako magsasawang bumawi at mag promise kasi lahat yon tutupadin ko. kaya don't worry future wifey ko you're more than enough mahal ko, we are more than enough. kaya we need to surpass the limit para ma-handle natin ang situation 
 na out of our hand para sa future mahal ko we can WORK TOGETHER and we can FIX TOGETHER. Ashley, mahal na mahal na mahal kita always remember na kapag pagod pahinga lang and kapag nasasaktan tuloy ka lang hihi———  ka-inggit flowers nila no, but here's yours:)`;
 
-/* ===== TYPING EFFECT ===== */
+let idx=0,current=part1;
+function type(){ if(idx<current.length){ typedText.textContent+=current[idx++]; setTimeout(type,26);} }
 
-let idx=0, current=part1;
-function type(){
-if(idx<current.length){
-typedText.textContent+=current[idx++];
-setTimeout(type,28);
-}
-}
 openLetterBtn.onclick=()=>{
-letterPopup.classList.add('open');
-typedText.textContent="";
-idx=0;
-current=part1;
+letterPopup.classList.add("open");
+typedText.textContent=""; idx=0; current=part1;
+nextBtn.style.display="inline-block";
+goBtn.style.display="none";
 type();
 };
-
 nextBtn.onclick=()=>{
-typedText.textContent="";
-idx=0;
-current=part2;
-type();
+typedText.textContent=""; idx=0; current=part2;
 nextBtn.style.display="none";
 goBtn.style.display="inline-block";
+type();
 };
 
-/* ===== FLOWERS GENERATOR ===== */
-
-function makeFlower(x){
-const f=document.createElement("div");
-f.className="flower";
-f.style.left=x+"%";
-
-for(let i=0;i<8;i++){
-const p=document.createElement("div");
-p.className="petal";
-p.style.transform=`rotate(${i*45}deg) translateZ(18px)`;
-f.appendChild(p);
-}
-const c=document.createElement("div");
-c.className="center-dot";
-f.appendChild(c);
+/* flowers */
+function flower(x){
+const f=document.createElement("div"); f.className="flower"; f.style.left=x+"%";
+for(let i=0;i<8;i++){const p=document.createElement("div");p.className="petal";p.style.transform=`rotate(${i*45}deg)`;f.appendChild(p);}
+const c=document.createElement("div");c.className="center-dot";f.appendChild(c);
 document.body.appendChild(f);
 }
+flower(8);flower(50);flower(88);
 
-makeFlower(10);
-makeFlower(50);
-makeFlower(85);
-
-/* ===== FIREFLIES ===== */
-
-for(let i=0;i<25;i++){
-const ff=document.createElement("div");
-ff.className="firefly";
-ff.style.left=Math.random()*100+"%";
-ff.style.bottom=Math.random()*100+"%";
-ff.style.animationDuration=(8+Math.random()*6)+"s";
-document.body.appendChild(ff);
+/* fireflies */
+for(let i=0;i<30;i++){
+const d=document.createElement("div");
+d.className="firefly";
+d.style.left=Math.random()*100+"%";
+d.style.bottom=Math.random()*100+"%";
+d.style.animationDuration=(7+Math.random()*6)+"s";
+document.body.appendChild(d);
 }
 
-/* ===== MUSIC ===== */
-
+/* youtube */
 let player,playing=false;
 function onYouTubeIframeAPIReady(){player=new YT.Player('ytplayer');}
 const tag=document.createElement('script');
@@ -340,7 +193,6 @@ if(!playing){player.playVideo();musicBtn.textContent="⏸ Pause Music";}
 else{player.pauseVideo();musicBtn.textContent="▶ Play Music";}
 playing=!playing;
 };
-
 </script>
 
 </body>
