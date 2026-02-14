@@ -341,17 +341,11 @@ function initBouquet(){
         flowers[flowers.length-1].color=['#ffffff','#f0f0f0']; // force white filler
     }
 
-    // V-shape red flowers below middle
-    for(let i=-4;i<=4;i++){
-        let dx=i*25;
-        let dy=60 + Math.abs(i)*10;
-        flowers.push(new Flower(centerX+dx,centerY+dy,'filler',0.9));
-        flowers[flowers.length-1].color=['#ff0000','#ff6666']; // red V
-    }
-
+    // Fireflies
     fireflies=[];
     for(let i=0;i<35;i++) fireflies.push(new Firefly());
 
+    // Stars
     stars=[];
     for(let i=0;i<20;i++){ 
         stars.push({
@@ -364,6 +358,33 @@ function initBouquet(){
             color:'rgba(255,200,100,'
         });
     }
+}
+
+// DRAW V-SHAPE CONTAINER
+function drawVContainer(){
+    ctx.save();
+    ctx.translate(canvas.width/2, canvas.height/2+130);
+    ctx.fillStyle='#ff0000';
+    ctx.beginPath();
+    ctx.moveTo(-80,0);
+    ctx.lineTo(0,120);
+    ctx.lineTo(80,0);
+    ctx.closePath();
+    ctx.fill();
+    // Ribbon
+    let gradRibbon=ctx.createLinearGradient(-60,0,60,60);
+    gradRibbon.addColorStop(0,'#e60073');
+    gradRibbon.addColorStop(0.5,'#ff4d88');
+    gradRibbon.addColorStop(1,'#e60073');
+    ctx.fillStyle=gradRibbon;
+    ctx.beginPath();
+    ctx.moveTo(-50,30);
+    ctx.bezierCurveTo(-20,70,20,70,50,30);
+    ctx.lineTo(50,50);
+    ctx.bezierCurveTo(20,90,-20,90,-50,50);
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
 }
 
 function drawStars(){
@@ -382,20 +403,7 @@ function animateBouquet(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
 
     drawStars();
-
-    // Ribbon in the middle of V
-    ctx.save();
-    ctx.translate(canvas.width/2,canvas.height/2+105);
-    let gradRibbon=ctx.createLinearGradient(-60,0,60,60);
-    gradRibbon.addColorStop(0,'#e60073');
-    gradRibbon.addColorStop(0.5,'#ff4d88');
-    gradRibbon.addColorStop(1,'#e60073');
-    ctx.fillStyle=gradRibbon;
-    ctx.beginPath();
-    ctx.moveTo(-60,0); ctx.bezierCurveTo(-50,60,50,60,60,0);
-    ctx.lineTo(60,20); ctx.bezierCurveTo(50,80,-50,80,-60,20); ctx.closePath();
-    ctx.fill();
-    ctx.restore();
+    drawVContainer();
 
     flowers.sort((a,b)=>b.depth-a.depth);
     flowers.forEach(f=>{f.update(); f.draw();});
