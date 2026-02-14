@@ -2,43 +2,78 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Valentine Dream Horizontal Carousel</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>lilay's valentine 2026</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
-*{box-sizing:border-box;}
+*{box-sizing:border-box;margin:0;padding:0;}
 body{
-  margin:0;
   font-family:'Quicksand',sans-serif;
-  color:white;
+  background:#0b0012;
   min-height:100vh;
-  overflow-x:hidden;
   display:flex;
   flex-direction:column;
   align-items:center;
-  background:radial-gradient(circle at 30% 20%, #2a0f1a, #0a0a18 60%, #04040a);
+  color:white;
+  overflow-x:hidden;
+  position:relative;
 }
 
-/* STARRY NIGHT */
-.stars,.stars2{position:fixed;inset:0;pointer-events:none;z-index:0;}
-.stars{background-image:radial-gradient(white 1px,transparent 1px);background-size:3px 3px;animation:scroll 140s linear infinite;opacity:.7;}
-.stars2{background-image:radial-gradient(#ffb6c1 1px,transparent 1px);background-size:5px 5px;animation:scroll 220s linear infinite;opacity:.35;}
-@keyframes scroll{from{transform:translateY(0)}to{transform:translateY(-2000px)}}
+/* STARRY BACKGROUND */
+.stars,.stars2{
+  position:fixed;inset:0;pointer-events:none;z-index:0;
+}
+.stars{
+  background:transparent;
+  box-shadow:0 0 1px #fff, 50px 100px #fff, 100px 200px #fff, 150px 50px #fff, 200px 150px #fff;
+  animation: twinkle 100s linear infinite;
+}
+.stars2{
+  background:transparent;
+  box-shadow:25px 50px #ffb6c1, 75px 150px #ffb6c1, 125px 25px #ffb6c1, 175px 125px #ffb6c1;
+  animation: twinkle2 140s linear infinite;
+}
+@keyframes twinkle{0%,100%{transform:translateY(0);}50%{transform:translateY(-1000px);}}
+@keyframes twinkle2{0%,100%{transform:translateY(0);}50%{transform:translateY(-1200px);}}
 
+/* TITLE WITH DECORATIONS */
+.title-container{
+  position:relative;
+  margin:30px 0 15px;
+  text-align:center;
+}
 h1{
   font-family:'Great Vibes',cursive;
   font-size:clamp(2.4rem,5vw,3.6rem);
-  margin:30px 10px 10px;
-  text-align:center;
-  text-shadow:0 0 20px rgba(255,140,170,.9);
+  color:#ffb6c1;
+  text-shadow:0 0 20px rgba(255,182,193,.9),0 0 40px rgba(214,52,105,.5);
+  position:relative;
   z-index:3;
 }
 
-/* ===== HORIZONTAL CAROUSEL STYLE ===== */
+/* small balloons and hearts around title */
+.title-decoration{
+  position:absolute;
+  width:12px;height:12px;
+  background:pink;
+  border-radius:50%;
+  animation:floatDecor 6s ease-in-out infinite;
+}
+.title-decoration:nth-child(1){left:-20px;top:-10px;}
+.title-decoration:nth-child(2){right:-15px;top:5px;}
+.title-decoration:nth-child(3){left:10%;top:-15px;background:#ff85a2;}
+.title-decoration:nth-child(4){right:12%;top:-12px;background:#ffccdd;}
+
+@keyframes floatDecor{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-8px);}
+}
+
+/* CAROUSEL */
 .carousel-container{
-  z-index:3;
+  z-index:2;
   backdrop-filter:blur(14px);
   background:rgba(255,255,255,.08);
   border-radius:28px;
@@ -48,20 +83,18 @@ h1{
   max-width:950px;
   overflow:hidden;
   position:relative;
+  display:flex;
+  justify-content:center;
 }
 
 .carousel-slide{
   display:flex;
-  flex-direction:row; /* horizontal */
-  justify-content:center;
-  align-items:center;
   gap:24px;
   transition:transform 0.6s ease;
 }
 
 .carousel-slide .item{
-  width:240px;
-  height:360px;
+  width:240px;height:360px;
   border-radius:24px;
   overflow:hidden;
   background:linear-gradient(45deg, #fff, #ffe1e6);
@@ -80,11 +113,14 @@ h1{
   z-index:2;
   animation:glow 2s infinite ease-in-out;
 }
-@keyframes glow{0%,100%{box-shadow:0 16px 36px rgba(214,52,105,0.5);}50%{box-shadow:0 22px 48px rgba(214,52,105,0.8);}}
+
+@keyframes glow{
+  0%,100%{box-shadow:0 16px 36px rgba(214,52,105,0.5);}
+  50%{box-shadow:0 22px 48px rgba(214,52,105,0.8);}
+}
 
 .carousel-slide video{
-  width:100%;
-  height:100%;
+  width:100%;height:100%;
   object-fit:cover;
   border-radius:20px;
 }
@@ -101,10 +137,11 @@ button{
   margin:14px 8px;
   cursor:pointer;
   box-shadow:0 0 20px rgba(255,100,150,.5);
-  z-index:5;
   position:relative;
+  z-index:5;
 }
-button:hover{transform:scale(1.06)}
+button:hover{transform:scale(1.06);}
+button:disabled{opacity:.5;cursor:default;}
 
 /* LETTER */
 .letter-popup{
@@ -121,7 +158,7 @@ button:hover{transform:scale(1.06)}
   transition:.4s;
 }
 .letter-popup.open{transform:translate(-50%,-50%) scale(1);}
-.letter-text{white-space:pre-wrap;line-height:1.7;text-align:justify}
+.letter-text{white-space:pre-wrap;line-height:1.7;text-align:justify;}
 
 /* FLOWERS */
 .flower{position:fixed;bottom:-20px;width:90px;height:90px;pointer-events:none;z-index:2;animation:wind 8s ease-in-out infinite;}
@@ -129,35 +166,35 @@ button:hover{transform:scale(1.06)}
 .petal{position:absolute;width:46px;height:70px;background:linear-gradient(#ff9ab5,#ff3d74);border-radius:50%;top:10px;left:22px;transform-origin:bottom center;}
 .center-dot{position:absolute;width:18px;height:18px;background:gold;border-radius:50%;top:38px;left:36px;box-shadow:0 0 10px gold}
 
-/* FIREFLIES */
+/* FIRELIES */
 .firefly{position:fixed;width:6px;height:6px;background:#fff7a8;border-radius:50%;box-shadow:0 0 14px #fff7a8;pointer-events:none;z-index:1;animation:fly linear infinite;}
 @keyframes fly{from{transform:translateY(0)}to{transform:translateY(-900px)}}
-
 </style>
 </head>
-
 <body>
 
 <div class="stars"></div>
 <div class="stars2"></div>
 
-<h1>Happy Valentines Lilay</h1>
+<div class="title-container">
+  <h1>Happy Valentines Lilay</h1>
+  <div class="title-decoration"></div>
+  <div class="title-decoration"></div>
+  <div class="title-decoration"></div>
+  <div class="title-decoration"></div>
+</div>
 
 <div class="carousel-container">
   <div class="carousel-slide" id="carouselSlide">
-
     <div class="item">
       <video src="00cc6afcd52ac41a63c01ccda9e7ffa4.mp4" autoplay loop muted></video>
     </div>
-
     <div class="item center">
       <video src="Recording 2026-01-06 140951.mp4" autoplay loop muted></video>
     </div>
-
     <div class="item">
       <video src="00cc6afcd52ac41a63c01ccda9e7ffa4.mp4" autoplay loop muted></video>
     </div>
-
   </div>
   <div id="hearts"></div>
 </div>
@@ -169,51 +206,44 @@ button:hover{transform:scale(1.06)}
 <h3>to my pretty lilay ❤️</h3>
 <div id="typedText" class="letter-text"></div>
 <button id="nextBtn">Next</button>
-<button id="goBtn" style="display:none">Let's go!</button>
+<button id="goBtn" disabled>Let's go!</button>
 <button onclick="letterPopup.classList.remove('open')">Close</button>
 </div>
 
-<!-- YOUTUBE LINK -->
+<!-- YouTube -->
 <div style="position:fixed;width:0;height:0;overflow:hidden">
-<iframe id="ytplayer"
-src="https://www.youtube.com/embed/E7Aif6vPMhU?enablejsapi=1"
-allow="autoplay"></iframe>
+<iframe id="ytplayer" src="https://www.youtube.com/embed/E7Aif6vPMhU?enablejsapi=1" allow="autoplay"></iframe>
 </div>
 
 <script>
-/* LETTER */
-const part1=`helloo baby girl kamusta? happy valentines po:) iloveyousomuch honhon kahit muka kang kalaban araw araw hahaha joke lang, btw lilay i want you to know na super proud ako sa efforts mo na ginagawa sa relationship natin——— proud ako dahil you are trying very very hard to the point na gusto mo pa malaman kung ano pa ang dapat gawin mo sa relationship natin. i am so proud of you mahal ko sobrang na aappreciate ko lahat ng small and big details na ginagawa mo for "us" 
-glad ako na nag grgrow tayo in different ways minsan sa away, minsan sa pagmamahalan——— but that's it mahal ko, ang layo layo na natin. andami na agad natin napagdaanan at lahat ng yon nalagpasan natin dahil mas nangingibabaw ang love natin sa isa't-isa.`;
+// LETTER
+const part1=`helloo baby girl kamusta? happy valentines po:) iloveyousomuch honhon kahit muka kang kalaban araw araw hahaha joke lang, btw lilay i want you to know na super proud ako sa efforts mo na ginagawa sa relationship natin——— proud ako dahil you are trying very very hard to the point na gusto mo pa malaman kung ano pa ang dapat gawin mo sa relationship natin. i am so proud of you mahal ko sobrang na aappreciate ko lahat ng small and big details na ginagawa mo for "us" glad ako na nag grgrow tayo in different ways minsan sa away, minsan sa pagmamahalan——— but that's it mahal ko, ang layo layo na natin. andami na agad natin napagdaanan at lahat ng yon nalagpasan natin dahil mas nangingibabaw ang love natin sa isa't-isa.`;
 
-const part2=` honhon ko, hindi ako magsasawang bumawi at mag promise kasi lahat yon tutupadin ko. kaya don't worry future wifey ko you're more than enough mahal ko, we are more than enough. kaya we need to surpass the limit para ma-handle natin ang situation 
-na out of our hand para sa future mahal ko we can WORK TOGETHER and we can FIX TOGETHER. Ashley, mahal na mahal na mahal kita always remember na kapag pagod pahinga lang and kapag nasasaktan tuloy ka lang hihi———  ka-inggit flowers nila no, but here's yours:)`;
+const part2=` honhon ko, hindi ako magsasawang bumawi at mag promise kasi lahat yon tutupadin ko. kaya don't worry future wifey ko you're more than enough mahal ko, we are more than enough. kaya we need to surpass the limit para ma-handle natin ang situation na out of our hand para sa future mahal ko we can WORK TOGETHER and we can FIX TOGETHER. Ashley, mahal na mahal na mahal kita always remember na kapag pagod pahinga lang and kapag nasasaktan tuloy ka lang hihi———  ka-inggit flowers nila no, but here's yours:)`;
 
 let idx=0,current=part1;
 function type(){ if(idx<current.length){ typedText.textContent+=current[idx++]; setTimeout(type,26);} }
 
 openLetterBtn.onclick=()=>{
 letterPopup.classList.add("open"); typedText.textContent=""; idx=0; current=part1;
-nextBtn.style.display="inline-block"; goBtn.style.display="none";
+nextBtn.style.display="inline-block"; goBtn.style.display="inline-block"; goBtn.disabled=true;
 type();
 };
 nextBtn.onclick=()=>{
 typedText.textContent=""; idx=0; current=part2;
-nextBtn.style.display="none"; goBtn.style.display="inline-block";
+nextBtn.style.display="none"; goBtn.disabled=false;
 type();
 };
 
-/* HORIZONTAL CAROUSEL LOGIC */
+/* HORIZONTAL CAROUSEL */
 const slide=document.getElementById('carouselSlide');
 const items=slide.querySelectorAll('.item');
 let currentIndex=0;
-
 function updateCarousel(){
 items.forEach((el,i)=>el.classList.remove('center'));
 items[currentIndex].classList.add('center');
 slide.style.transform=`translateX(-${currentIndex*(items[0].offsetWidth+24)}px)`;
 }
-
-// auto scroll every 4s
 setInterval(()=>{
 currentIndex=(currentIndex+1)%items.length;
 updateCarousel();
