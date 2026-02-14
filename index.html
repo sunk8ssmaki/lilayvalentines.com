@@ -3,271 +3,60 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Valentine Dream Carousel</title>
-
+<title>Valentine Bouquet</title>
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
-
 <style>
-*{box-sizing:border-box;margin:0;padding:0;}
+*{margin:0;padding:0;box-sizing:border-box;}
 body{
   font-family:'Quicksand',sans-serif;
   background:#0b0012;
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
   color:white;
-  overflow-x:hidden;
-  position:relative;
-}
-
-/* TITLE */
-.title-container{
-  position:relative;
-  margin:30px 0 15px;
-  text-align:center;
-  z-index:10;
+  overflow:hidden;
 }
 h1{
   font-family:'Great Vibes',cursive;
-  font-size:clamp(2.4rem,5vw,3.6rem);
+  font-size:3rem;
+  text-align:center;
   color:#ffb6c1;
-  text-shadow:0 0 20px rgba(255,182,193,.9),0 0 40px rgba(214,52,105,.5);
-  position:relative;
-  z-index:10;
+  margin:20px 0;
+  text-shadow:0 0 20px rgba(255,182,193,0.8);
 }
-.title-decoration{
-  position:absolute;
-  width:12px;height:12px;
-  background:pink;
-  border-radius:50%;
+canvas{
+  display:block;
+  width:100vw;
+  height:100vh;
 }
-.title-decoration:nth-child(1){left:-20px;top:-10px;}
-.title-decoration:nth-child(2){right:-15px;top:5px;}
-.title-decoration:nth-child(3){left:10%;top:-15px;background:#ff85a2;}
-.title-decoration:nth-child(4){right:12%;top:-12px;background:#ffccdd;}
-
-/* CAROUSEL */
-.carousel-container{
-  z-index:2;
-  backdrop-filter:blur(14px);
-  background:rgba(255,255,255,.08);
-  border-radius:28px;
-  padding:22px;
-  box-shadow:0 0 40px rgba(255,120,160,.25);
-  width:95%;
-  max-width:950px;
-  overflow:hidden;
-  position:relative;
-  display:flex;
-  justify-content:center;
-}
-.carousel-slide{
-  display:flex;
-  gap:24px;
-}
-.carousel-slide .item{
-  width:240px;height:360px;
-  border-radius:24px;
-  overflow:hidden;
-  background:linear-gradient(45deg, #fff, #ffe1e6);
-  box-shadow:0 12px 24px rgba(214,52,105,0.3);
-  transform:scale(0.85);
-  opacity:0.6;
-  position:relative;
-}
-.carousel-slide .item.center{
-  transform:scale(1);
-  opacity:1;
-  border:5px solid #ff85a2;
-  box-shadow:0 16px 36px rgba(214,52,105,0.5);
-  z-index:2;
-}
-.carousel-slide video{
-  width:100%;height:100%;
-  object-fit:cover;
-  border-radius:20px;
-}
-
-/* BUTTONS */
-button{
-  background:linear-gradient(45deg,#ff7fa5,#ff4d88);
-  border:none;
-  padding:14px 26px;
-  border-radius:18px;
-  color:white;
-  font-weight:600;
-  font-size:1rem;
-  margin:14px 8px;
-  cursor:pointer;
-  box-shadow:0 0 20px rgba(255,100,150,.5);
-  position:relative;
-  z-index:15;
-}
-button:hover{transform:scale(1.06);}
-button:disabled{opacity:.5;cursor:default;}
-
-/* LETTER */
-.letter-popup{
-  position:fixed;
-  top:50%;left:50%;
-  transform:translate(-50%,-50%) scale(0);
-  width:95%;max-width:560px;max-height:80vh;
-  overflow:auto;
-  background:linear-gradient(to bottom right, #ffe1eb, #ffd1e0);
-  border-radius:24px;
-  padding:26px;
-  z-index:20;
-  transition:.4s;
-  box-shadow:0 0 50px rgba(255,182,193,0.5);
-}
-.letter-popup.open{transform:translate(-50%,-50%) scale(1);}
-.letter-text{white-space:pre-wrap;line-height:1.8;text-align:justify;color:#ff69b4;font-size:1rem; margin-top:20px;}
-
-/* BOUQUET CANVAS */
-#flowerCanvas{
-  display:none;
-  position:fixed;
-  top:0;left:0;
-  width:100%;
-  height:100%;
-  z-index:5;
-  background:#0b0012;
-}
-.ending-text{
-  display:none;
-  font-size:2rem;
-  color:#ff4d88;
-  font-family:'Great Vibes',cursive;
-  text-align:right;
-  position:fixed;
-  top:50%;
-  right:5%;
-  transform:translateY(-50%);
-  z-index:15;
-  animation:fadeMove 3s ease-in-out infinite alternate;
-}
-@keyframes fadeMove{
-  0%{opacity:0.6; transform:translateY(-50%) translateX(0);}
-  100%{opacity:1; transform:translateY(-50%) translateX(-10px);}
-}
-#homeBtn{display:none;position:fixed;top:5%;right:5%;z-index:15;}
 </style>
 </head>
 <body>
-
-<div class="title-container">
-  <h1>Happy Valentines Lilay</h1>
-  <div class="title-decoration"></div>
-  <div class="title-decoration"></div>
-  <div class="title-decoration"></div>
-  <div class="title-decoration"></div>
-</div>
-
-<div class="carousel-container" id="carouselMain">
-  <div class="carousel-slide" id="carouselSlide">
-    <div class="item">
-      <video src="00cc6afcd52ac41a63c01ccda9e7ffa4.mp4" autoplay loop muted></video>
-    </div>
-    <div class="item center">
-      <video src="Recording 2026-01-06 140951.mp4" autoplay loop muted></video>
-    </div>
-    <div class="item">
-      <video src="00cc6afcd52ac41a63c01ccda9e7ffa4.mp4" autoplay loop muted></video>
-    </div>
-  </div>
-</div>
-
-<button id="openLetterBtn">Open Letter</button>
-<button id="musicBtn">▶ Play Music</button>
-
-<div class="letter-popup" id="letterPopup">
-<h3 style="color:#ff69b4;">  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to my pretty lilay ❤️
-</h3>
-<div id="typedText" class="letter-text"></div>
-<button id="nextBtn">Next</button>
-<button id="goBtn" disabled>Let's go!</button>
-<button onclick="letterPopup.classList.remove('open')">Close</button>
-</div>
-
-<!-- YouTube -->
-<div style="position:fixed;width:0;height:0;overflow:hidden">
-<iframe id="ytplayer" src="https://www.youtube.com/embed/E7Aif6vPMhU?enablejsapi=1" allow="autoplay"></iframe>
-</div>
-
-<!-- FLOWERS -->
+<h1>Happy Valentine's Day Lilay 💖</h1>
 <canvas id="flowerCanvas"></canvas>
-<div class="ending-text" id="endingText">if i could, then i would</div>
-<button id="homeBtn">🏠 Home</button>
-
 <script>
-// LETTER
-const part1=`     helloo baby girl kamusta? happy valentines po:) iloveyousomuch honhon kahit muka kang kalaban araw araw hahaha joke lang, btw lilay i want you to know na super proud ako sa efforts mo na ginagawa mo sa relationship natin — proud ako dahil you are trying very very hard to the point na gusto mo pa malaman kung ano pa ang dapat gawin mo sa relationship natin. i am so proud of you mahal ko sobrang na aappreciate ko lahat ng small and big details na ginagawa mo for "us" 
-glad ako na nag grgrow tayo in different ways minsan sa away, minsan sa pagmamahalan — but that's it mahal ko, ang layo layo na natin. andami na agad natin napagdaanan at lahat ng yon nalagpasan natin dahil mas nangingibabaw ang love natin sa isa't-isa.`;
-
-const part2=`honhon ko, hindi ako magsasawang bumawi at mag promise kasi lahat yon tutupadin ko. kaya don't worry future wifey ko you're more than enough mahal ko, we are more than enough. kaya we need to surpass the limit para ma-handle natin ang situation 
-na out of our hand para sa future mahal ko we can WORK TOGETHER and we can FIX TOGETHER. Ashley, mahal na mahal na mahal kita always remember na kapag pagod pahinga lang and kapag nasasaktan tuloy ka lang hihi — ka-inggit flowers nila no, but here's yours:)`;
-
-let idx=0,current=part1;
-function type(){ 
-  if(idx<current.length){ 
-    typedText.textContent+=current[idx++]; 
-    setTimeout(type,60);
-  } 
-}
-
-openLetterBtn.onclick=()=>{
-letterPopup.classList.add("open"); typedText.textContent=""; idx=0; current=part1;
-nextBtn.style.display="inline-block"; goBtn.style.display="inline-block"; goBtn.disabled=true;
-type();
-};
-nextBtn.onclick=()=>{
-typedText.textContent=""; idx=0; current=part2;
-nextBtn.style.display="none"; goBtn.disabled=false;
-type();
-};
-
-// Carousel static
-const slide=document.getElementById('carouselSlide');
-const items=slide.querySelectorAll('.item');
-items.forEach((el,i)=>el.classList.remove('center'));
-items[1].classList.add('center');
-
-// Bouquet + stars + fireflies
 const canvas=document.getElementById('flowerCanvas');
 const ctx=canvas.getContext('2d');
 canvas.width=window.innerWidth;
 canvas.height=window.innerHeight;
 
 class Flower{
-    constructor(x,y,type='carnation',depth=1){
-        this.x=x; this.y=y; this.depth=depth;
-        this.scale=0; this.targetScale=1.2;
-        this.type=type;
-        this.rotation=Math.random()*Math.PI*2;
-        this.petalCount=12+Math.floor(Math.random()*4);
-        this.color=this.getColor(type);
-        this.bloomSpeed=0.02+Math.random()*0.01;
+    constructor(x,y,color){
+        this.x=x;
+        this.y=y;
+        this.color=color;
+        this.scale=0;
+        this.targetScale=1.2;
+        this.rotation=(Math.random()-0.5)*0.4;
+        this.petalCount=12+Math.floor(Math.random()*3);
+        this.bloomSpeed=0.02+Math.random()*0.02;
     }
-    getColor(type){
-        switch(type){
-            case 'carnation': 
-                const colors=[['#ff69b4','#ff1493'], ['#ff85a2','#ff4d88'], ['#ff0000','#ff6666'], ['#ffc0cb','#ff69b4']];
-                return colors[Math.floor(Math.random()*colors.length)];
-            case 'filler': 
-                return ['#ffffff','#f0f0f0'];
-            default: return ['#ffc0cb','#ff69b4'];
-        }
-    }
-    drawPetals(){
+    update(){this.scale+=(this.targetScale-this.scale)*this.bloomSpeed;}
+    draw(){
         ctx.save();
         ctx.translate(this.x,this.y);
         ctx.rotate(this.rotation);
         ctx.scale(this.scale,this.scale);
         for(let i=0;i<this.petalCount;i++){
             ctx.rotate((2*Math.PI)/this.petalCount);
-            let grad=ctx.createLinearGradient(0,0,0,-60);
+            let grad=ctx.createLinearGradient(0,0,0,-50);
             grad.addColorStop(0,this.color[0]);
             grad.addColorStop(1,this.color[1]);
             ctx.fillStyle=grad;
@@ -275,165 +64,78 @@ class Flower{
             ctx.lineWidth=0.8;
             ctx.beginPath();
             ctx.moveTo(0,0);
-            ctx.bezierCurveTo(-20,-50,20,-55,0,-12);
-            for(let l=0;l<3;l++){
-                ctx.moveTo(0,-12);
-                ctx.lineTo(Math.random()*10-5,-20-l*10);
-            }
+            ctx.bezierCurveTo(-15,-40,15,-45,0,-10);
             ctx.fill();
             ctx.stroke();
         }
         ctx.restore();
     }
-    update(){this.scale+=(this.targetScale-this.scale)*this.bloomSpeed;}
-    draw(){this.drawPetals();}
 }
 
-class Firefly{
-    constructor(){
-        this.x=window.innerWidth/2 + Math.random()*400-200;
-        this.y=window.innerHeight/2 + Math.random()*400-200;
-        this.radius=1+Math.random()*2;
-        this.opacity=Math.random()*0.5+0.3;
-        this.angle=Math.random()*Math.PI*2;
-        this.speed=0.2+Math.random()*0.2;
+class Stem{
+    constructor(x,y,length,angle){
+        this.x=x;
+        this.y=y;
+        this.length=length;
+        this.angle=angle;
     }
     draw(){
+        ctx.save();
+        ctx.strokeStyle='#228B22';
+        ctx.lineWidth=14;
+        ctx.lineCap='round';
         ctx.beginPath();
-        ctx.arc(this.x,this.y,this.radius,0,Math.PI*2);
-        ctx.fillStyle=`rgba(255,247,168,${this.opacity})`;
-        ctx.shadowColor=`rgba(255,247,168,${this.opacity})`;
-        ctx.shadowBlur=8;
-        ctx.fill();
-    }
-    update(){
-        this.x+=Math.cos(this.angle)*this.speed;
-        this.y+=Math.sin(this.angle)*this.speed;
-        this.opacity=0.3+0.3*Math.sin(Date.now()/600+this.x);
-    }
-}
-
-let flowers=[],fireflies=[],stars=[];
-function initBouquet(){
-    flowers=[];
-    const centerX=canvas.width/2, centerY=canvas.height/2-80;
-
-    // Middle carnations - full top V
-    flowers.push(new Flower(centerX-90, centerY, 'carnation', 1.3));
-    flowers.push(new Flower(centerX-45, centerY-40, 'carnation', 1.2));
-    flowers.push(new Flower(centerX, centerY, 'carnation', 1.5));
-    flowers.push(new Flower(centerX+45, centerY-40, 'carnation', 1.2));
-    flowers.push(new Flower(centerX+90, centerY, 'carnation', 1.3));
-    flowers.push(new Flower(centerX-70, centerY-90, 'carnation', 1.1));
-    flowers.push(new Flower(centerX+70, centerY-90, 'carnation', 1.1));
-    flowers.push(new Flower(centerX, centerY-100, 'carnation', 1.2));
-
-    // Filler white flowers
-    for(let i=0;i<20;i++){
-        let angle=Math.random()*Math.PI*2;
-        let radius=50+Math.random()*60;
-        let dx=Math.cos(angle)*radius;
-        let dy=Math.sin(angle)*radius;
-        let f=new Flower(centerX+dx, centerY+dy, 'filler', 0.7);
-        f.color=['#ffffff','#f0f0f0'];
-        flowers.push(f);
-    }
-
-    // Fireflies
-    fireflies=[];
-    for(let i=0;i<35;i++) fireflies.push(new Firefly());
-
-    // Stars
-    stars=[];
-    for(let i=0;i<20;i++){
-        stars.push({
-            x:Math.random()*canvas.width,
-            y:Math.random()*canvas.height*0.5,
-            radius:1+Math.random()*1.5,
-            baseOpacity:0.3+Math.random()*0.3,
-            opacity:0,
-            speed:0.002+Math.random()*0.003,
-            color:'rgba(255,200,100,'
-        });
-    }
-}
-
-// DRAW V-SHAPE CONTAINER + decorations
-function drawVContainer(){
-    ctx.save();
-    ctx.translate(canvas.width/2, canvas.height/2+130);
-    ctx.fillStyle='#ff0000';
-    ctx.beginPath();
-    ctx.moveTo(-150,0);
-    ctx.lineTo(0,220);
-    ctx.lineTo(150,0);
-    ctx.closePath();
-    ctx.fill();
-
-    // Ribbon gradient
-    let gradRibbon=ctx.createLinearGradient(-100,0,100,100);
-    gradRibbon.addColorStop(0,'#e60073');
-    gradRibbon.addColorStop(0.5,'#ff4d88');
-    gradRibbon.addColorStop(1,'#e60073');
-    ctx.fillStyle=gradRibbon;
-    ctx.beginPath();
-    ctx.moveTo(-90,40);
-    ctx.bezierCurveTo(-40,120,40,120,90,40);
-    ctx.lineTo(90,70);
-    ctx.bezierCurveTo(40,150,-40,150,-90,70);
-    ctx.closePath();
-    ctx.fill();
-
-    // Decorative lines on V
-    ctx.strokeStyle='rgba(255,255,255,0.2)';
-    ctx.lineWidth=2;
-    for(let i=-130;i<=130;i+=20){
-        ctx.beginPath();
-        ctx.moveTo(i,0);
-        ctx.lineTo(0,200);
+        ctx.moveTo(this.x,this.y);
+        ctx.lineTo(this.x+Math.sin(this.angle)*this.length,this.y+Math.cos(this.angle)*this.length);
         ctx.stroke();
+        ctx.restore();
     }
+}
 
+const flowers=[],stems=[];
+const centerX=canvas.width/2;
+const centerY=canvas.height/2-50;
+const stemLength=200;
+
+// Create bouquet
+const colors=[
+  ['#ff69b4','#ff1493'],
+  ['#ff85a2','#ff4d88'],
+  ['#ff0000','#ff6666'],
+  ['#ffc0cb','#ff69b4']
+];
+for(let i=-4;i<=4;i++){
+    const angle=i*0.08; // small V spread
+    const x=centerX+i*40;
+    const y=centerY - Math.abs(i)*20;
+    stems.push(new Stem(x, y+10, stemLength, Math.PI + angle));
+    const color=colors[Math.floor(Math.random()*colors.length)];
+    flowers.push(new Flower(x,y,color));
+}
+
+// Ribbon tie at bottom
+function drawRibbon(){
+    ctx.save();
+    const tieX=centerX;
+    const tieY=centerY+stemLength;
+    ctx.fillStyle='#ff4d88';
+    ctx.beginPath();
+    ctx.ellipse(tieX,tieY,25,12,0,0,2*Math.PI);
+    ctx.fill();
     ctx.restore();
 }
 
-function drawStars(){
-    stars.forEach(s=>{
-        s.opacity=s.baseOpacity + 0.2*Math.sin(Date.now()*s.speed);
-        ctx.beginPath();
-        ctx.arc(s.x,s.y,s.radius,0,Math.PI*2);
-        ctx.fillStyle=s.color + s.opacity + ')';
-        ctx.shadowColor=s.color + s.opacity + ')';
-        ctx.shadowBlur=6;
-        ctx.fill();
-    });
-}
-
-function animateBouquet(){
+function animate(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
-    drawStars();
-    drawVContainer();
-    flowers.sort((a,b)=>b.depth-a.depth);
-    flowers.forEach(f=>{f.update(); f.draw();});
-    fireflies.forEach(ff=>{ff.update(); ff.draw();});
-    requestAnimationFrame(animateBouquet);
+    // Draw stems first
+    stems.forEach(s=>s.draw());
+    // Draw ribbon
+    drawRibbon();
+    // Draw flowers
+    flowers.forEach(f=>{f.update();f.draw();});
+    requestAnimationFrame(animate);
 }
-
-// Lets Go button
-goBtn.onclick=()=>{
-    document.getElementById('carouselMain').style.display='none';
-    document.getElementById('letterPopup').style.display='none';
-    document.getElementById('openLetterBtn').style.display='none';
-    document.getElementById('musicBtn').style.display='none';
-    canvas.style.display='block';
-    document.getElementById('endingText').style.display='block';
-    document.getElementById('homeBtn').style.display='block';
-    initBouquet();
-    animateBouquet();
-};
-
-// Home button
-document.getElementById('homeBtn').onclick=()=>{location.reload();};
+animate();
 
 // Resize
 window.addEventListener('resize',()=>{
@@ -441,17 +143,6 @@ window.addEventListener('resize',()=>{
     canvas.height=window.innerHeight;
 });
 
-// YouTube
-let player,playing=false;
-function onYouTubeIframeAPIReady(){player=new YT.Player('ytplayer');}
-const tag=document.createElement('script');tag.src="https://www.youtube.com/iframe_api";document.body.appendChild(tag);
-musicBtn.onclick=()=>{
-    if(player){
-        if(playing){player.pauseVideo(); musicBtn.textContent='▶ Play Music'; playing=false;}
-        else{player.playVideo(); musicBtn.textContent='⏸ Pause Music'; playing=true;}
-    }
-};
 </script>
-
 </body>
 </html>
