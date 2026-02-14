@@ -36,6 +36,16 @@ h1{
   position:relative;
   z-index:10;
 }
+.title-decoration{
+  position:absolute;
+  width:12px;height:12px;
+  background:pink;
+  border-radius:50%;
+}
+.title-decoration:nth-child(1){left:-20px;top:-10px;}
+.title-decoration:nth-child(2){right:-15px;top:5px;}
+.title-decoration:nth-child(3){left:10%;top:-15px;background:#ff85a2;}
+.title-decoration:nth-child(4){right:12%;top:-12px;background:#ffccdd;}
 
 /* CAROUSEL */
 .carousel-container{
@@ -148,6 +158,10 @@ button:disabled{opacity:.5;cursor:default;}
 
 <div class="title-container">
   <h1>Happy Valentines Lilay</h1>
+  <div class="title-decoration"></div>
+  <div class="title-decoration"></div>
+  <div class="title-decoration"></div>
+  <div class="title-decoration"></div>
 </div>
 
 <div class="carousel-container" id="carouselMain">
@@ -189,8 +203,11 @@ button:disabled{opacity:.5;cursor:default;}
 
 <script>
 // LETTER
-const part1=`Hello baby girl...`; // shortened for brevity
-const part2=`Honhon ko...`;
+const part1=`     helloo baby girl kamusta? happy valentines po:) iloveyousomuch honhon kahit muka kang kalaban araw araw hahaha joke lang, btw lilay i want you to know na super proud ako sa efforts mo na ginagawa mo sa relationship natin — proud ako dahil you are trying very very hard to the point na gusto mo pa malaman kung ano pa ang dapat gawin mo sa relationship natin. i am so proud of you mahal ko sobrang na aappreciate ko lahat ng small and big details na ginagawa mo for "us" 
+glad ako na nag grgrow tayo in different ways minsan sa away, minsan sa pagmamahalan — but that's it mahal ko, ang layo layo na natin. andami na agad natin napagdaanan at lahat ng yon nalagpasan natin dahil mas nangingibabaw ang love natin sa isa't-isa.`;
+
+const part2=`honhon ko, hindi ako magsasawang bumawi at mag promise kasi lahat yon tutupadin ko. kaya don't worry future wifey ko you're more than enough mahal ko, we are more than enough. kaya we need to surpass the limit para ma-handle natin ang situation 
+na out of our hand para sa future mahal ko we can WORK TOGETHER and we can FIX TOGETHER. Ashley, mahal na mahal na mahal kita always remember na kapag pagod pahinga lang and kapag nasasaktan tuloy ka lang hihi — ka-inggit flowers nila no, but here's yours:)`;
 
 let idx=0,current=part1;
 function type(){ 
@@ -242,6 +259,21 @@ class Flower{
             default: return ['#ffc0cb','#ff69b4'];
         }
     }
+    drawStem(){
+        // THIN GREEN STEM V-SHAPE DOWN
+        ctx.strokeStyle='#228B22';
+        ctx.lineWidth=3*this.depth;
+        ctx.beginPath();
+        ctx.moveTo(this.x,this.y+20); // top of stem connects to flower bottom
+        ctx.lineTo(this.x,this.y+80+Math.random()*30); // extend downward
+        // Thorns
+        for(let i=0;i<5;i++){
+            let tY=this.y+20 + i*12;
+            ctx.moveTo(this.x, tY);
+            ctx.lineTo(this.x + (Math.random()*6-3), tY+4);
+        }
+        ctx.stroke();
+    }
     drawPetals(){
         ctx.save();
         ctx.translate(this.x,this.y);
@@ -268,27 +300,7 @@ class Flower{
         ctx.restore();
     }
     update(){this.scale+=(this.targetScale-this.scale)*this.bloomSpeed;}
-    draw(){this.drawPetals();}
-}
-
-class Stem{
-    constructor(x,y,length,angle){
-        this.x=x;
-        this.y=y;
-        this.length=length;
-        this.angle=angle;
-    }
-    draw(){
-        ctx.save();
-        ctx.strokeStyle='#228B22';
-        ctx.lineWidth=14;
-        ctx.lineCap='round';
-        ctx.beginPath();
-        ctx.moveTo(this.x,this.y);
-        ctx.lineTo(this.x+Math.sin(this.angle)*this.length,this.y+Math.cos(this.angle)*this.length);
-        ctx.stroke();
-        ctx.restore();
-    }
+    draw(){this.drawPetals(); this.drawStem();}
 }
 
 class Firefly{
@@ -315,10 +327,9 @@ class Firefly{
     }
 }
 
-let flowers=[],stems=[],fireflies=[],stars=[];
+let flowers=[],fireflies=[],stars=[];
 function initBouquet(){
     flowers=[];
-    stems=[];
     const centerX=canvas.width/2, centerY=canvas.height/2+50;
 
     // Middle 3 big pink carnations
@@ -326,7 +337,7 @@ function initBouquet(){
     flowers.push(new Flower(centerX,centerY,'carnation',1.4));
     flowers.push(new Flower(centerX+60,centerY,'carnation',1.2));
 
-    // Surrounding white carnations in front
+    // Surrounding white fillers
     for(let i=0;i<18;i++){
         let angle=Math.random()*Math.PI*2;
         let radius=50+Math.random()*40;
@@ -335,13 +346,6 @@ function initBouquet(){
         flowers.push(new Flower(centerX+dx,centerY+dy,'filler',0.8));
         flowers[flowers.length-1].color=['#ffffff','#f0f0f0']; // force white filler
     }
-
-    // Create stems for each flower in a V shape
-    const stemLength=200;
-    flowers.forEach((f,i)=>{
-        const spread=(i-flowers.length/2)*0.06;
-        stems.push(new Stem(f.x,f.y,stemLength,Math.PI + spread));
-    });
 
     // Fireflies
     fireflies=[];
@@ -379,13 +383,8 @@ function animateBouquet(){
 
     drawStars();
 
-    // Draw stems first
-    stems.forEach(s=>s.draw());
-
-    // Draw flowers on top
     flowers.sort((a,b)=>b.depth-a.depth);
     flowers.forEach(f=>{f.update(); f.draw();});
-
     fireflies.forEach(ff=>{ff.update(); ff.draw();});
 
     requestAnimationFrame(animateBouquet);
